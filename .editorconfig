@@ -1,0 +1,13 @@
+[*]
+indent_size = 4
+indent_style = tab
+
+[*.{json,ts}]
+indent_size = 2
+
+[*.{yaml,yml}]
+indent_size = 2
+indent_style = space
+
+[/pnpm-{lock,workspace}.yaml]
+end_of_line = lf

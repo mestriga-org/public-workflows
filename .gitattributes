@@ -1,0 +1,18 @@
+* text=auto
+* whitespace=tabwidth=4,indent-with-non-tab
+
+.editorconfig  text
+.gitattributes text
+.gitignore     text
+*.md           text
+
+*.json text whitespace=tabwidth=2,indent-with-non-tab
+*.ts   text whitespace=tabwidth=2,indent-with-non-tab
+
+*.yaml text whitespace=tabwidth=2,tab-in-indent
+*.yml  text whitespace=tabwidth=2,tab-in-indent
+
+/pnpm-lock.yaml      eol=lf
+/pnpm-workspace.yaml eol=lf
+
+/.node-version text working-tree-encoding=ASCII

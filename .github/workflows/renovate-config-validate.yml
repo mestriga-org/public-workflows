@@ -1,0 +1,50 @@
+on: [workflow_call]
+defaults:
+  run:
+    shell: sh
+env:
+  NODE_OPTIONS: >- # for v25.8
+    --no-addons
+    --disable-proto=delete
+    --force-context-aware
+    --force-node-api-uncaught-exceptions-policy
+    --frozen-intrinsics
+    --no-global-search-paths
+    --pending-deprecation
+    --tls-min-v1.3
+permissions: { }
+jobs:
+  renovate-config-validate:
+    permissions:
+      contents: read
+    timeout-minutes: 1
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Configure git
+        uses: mestriga-org/github-workflows/actions/git-configure@main
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          set-safe-directory: false
+          sparse-checkout-cone-mode: false
+          # https://github.com/renovatebot/renovate/blob/42.42.0/lib/config/app-strings.ts#L1-L12
+          sparse-checkout: |
+            /renovate.json
+            /renovate.json5
+            /.github/renovate.json
+            /.github/renovate.json5
+            /.gitlab/renovate.json
+            /.gitlab/renovate.json5
+            /.renovaterc
+            /.renovaterc.json
+            /.renovaterc.json5
+            /package.json
+            !*/
+      - name: renovate-config-validator
+        uses: docker://renovate/renovate:44.117.0@sha256:23a7b278b1ed21108cbf872f7464aeff1a7f0df786fc09d3217ef7e55b483665
+        with:
+          # https://github.com/renovatebot/renovate/blob/42.42.0/lib/config-validator.ts
+          entrypoint: renovate-config-validator
+        env:
+          NODE_OPTIONS: ${{ env.NODE_OPTIONS }} --no-frozen-intrinsics

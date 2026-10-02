@@ -5,7 +5,7 @@ indent_style = tab
 [*.{json,ts}]
 indent_size = 2
 
-[*.{yaml,yml}]
+[*.y{aml,ml}]
 indent_size = 2
 indent_style = space
 

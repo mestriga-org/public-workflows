@@ -1,0 +1,15 @@
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions: { }
+jobs:
+  git-check:
+    permissions:
+      contents: read
+    uses: $/.github/workflows/git-check.yml
+  pnpm-run-lint:
+    permissions:
+      contents: read
+    uses: $/.github/workflows/pnpm-run-lint.yml

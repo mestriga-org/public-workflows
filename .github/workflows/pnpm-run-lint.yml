@@ -1,0 +1,102 @@
+on: [workflow_call]
+# TODO: validate pnpm config by reading yaml before pnpm setup
+# TODO: require all side effects to be already cached on reinstall
+# TODO: reporter
+# TODO: review cache key for pnpm dedupe
+# TODO: put .pnpm-store in workspace root
+# TODO: use fetch (see enableModulesDir/virtualStoreOnly, handle side effect caching)
+# TODO: use @pnpm/mount-modules with fetch
+# TODO: audit
+defaults:
+  run:
+    shell: sh
+env:
+  NODE_OPTIONS: >- # for v25.8
+    --no-addons
+    --disable-proto=delete
+    --force-context-aware
+    --force-node-api-uncaught-exceptions-policy
+    --frozen-intrinsics
+    --no-global-search-paths
+    --pending-deprecation
+    --tls-min-v1.3
+permissions: { }
+jobs:
+  pnpm-run-lint:
+    permissions:
+      contents: read
+    timeout-minutes: 3
+    runs-on: ubuntu-slim
+    steps:
+      - name: Configure git
+        uses: mestriga-org/github-workflows/actions/git-configure@main
+      - name: Configure pnpm
+        run: |-
+          set -Cfu
+          # makes git dependency installation fail:
+          #>>"${GITHUB_ENV:?}" command -p printf \
+          #'NPM_CONFIG_WORKSPACE_DIR=%s
+          #' "${GITHUB_WORKSPACE:?}"
+          CDPATH= cd -- ~/.config/
+          command -p mkdir -p pnpm
+          >pnpm/config.yaml command -p printf %s\\n \
+          'bail: false
+          engineStrict: true
+          fetchRetryMaxtimeout: 10000
+          fetchTimeout: 15000
+          minimumReleaseAgeIgnoreMissingTime: false
+          minimumReleaseAgeStrict: true
+          modulesCacheMaxAge: 0
+          nodeOptions: ${NODE_OPTIONS}
+          packageImportMethod: hardlink
+          pmOnFail: error
+          trustPolicy: no-downgrade
+          verifyDepsBeforeRun: error'
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          set-safe-directory: false
+      - name: Validate pnpm-workspace.yaml
+        run: |-
+          set -Cfu
+          >/dev/null exec yq -e --yaml-fix-merge-anchor-to-spec -- 'keys - [
+            "packages",
+            "allowBuilds",
+            "audit",
+            "autoDedupe",
+            "catalog",
+            "catalogMode",
+            "catalogPrune",
+            "dedupeDirectDeps",
+            "dedupePeers",
+            "disallowWorkspaceCycles",
+            "enablePrePostScripts",
+            "hoist",
+            "minimumReleaseAgeExcludePrune",
+            "nodeOptions",
+            "resolutionMode",
+            "strictPeerDependencies",
+            "trustPolicyExclude",
+            "trustPolicyExcludePrune"
+          ] | any | not' pnpm-workspace.yaml
+      - name: Setup pnpm
+        # This requires a package.json with a packageManager field matching "pnpm@"
+        # The version may be partial
+        uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
+        with:
+          require-lockfile: true
+          node-version-file: .node-version
+        env:
+          NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
+          PNPM_CONFIG_PM_ON_FAIL: download # https://github.com/pnpm/setup/issues/57
+      - name: Pnpm config path
+        run: |-
+          set -Cfu
+          config=$(exec pnpm pm --dir . config get globalconfig)
+          command -p test ~/.config/pnpm/config.yaml -ef "$config"
+      - name: Pnpm run lint
+        run: exec pnpm pm --dir . --include-workspace-root --fail-if-no-match -r run -- lint
+        env:
+          # fixes [WARN] Your node_modules are out of sync with your lockfile. The value of the autoDedupe setting has changed
+          PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: warn

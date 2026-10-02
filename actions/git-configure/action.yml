@@ -1,0 +1,42 @@
+name: Configure git
+description: ''
+runs:
+  using: composite
+  steps:
+    - shell: sh
+      run: |-
+        # for git v2.54
+        set -Cfu
+        >>"${GITHUB_ENV:?}" command -p printf \
+        'GIT_CEILING_DIRECTORIES=%s/..
+        GIT_TERMINAL_PROMPT=false
+        ' "${GITHUB_WORKSPACE:?}"
+        >~/.gitconfig command -p printf %s\\n \
+        '[checkout]
+        workers = 0
+        [core]
+        fsync = none
+        [credential]
+        interactive = false
+        [feature]
+        experimental
+        manyFiles
+        [fetch]
+        parallel = 0
+        [hook]
+        jobs = -1
+        [http]
+        sslVersion = tlsv1.3
+        [index]
+        sparse
+        threads
+        [init]
+        defaultBranch = main
+        [pack]
+        threads = 0
+        [safe]
+        bareRepository = explicit
+        [transfer]
+        unpackLimit = 1
+        [worktree]
+        useRelativePaths'

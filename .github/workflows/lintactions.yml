@@ -35,7 +35,7 @@ jobs:
         with:
           persist-credentials: false
           set-safe-directory: false
-          sparse-checkout: .github/workflows
+          sparse-checkout: .github
       - name: Download and run actionlint
         # TODO new command syntax in release post 1.17: --command check --output-format github
         # TODO renovate update

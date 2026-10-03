@@ -1,4 +1,5 @@
 on: [workflow_call]
+cache-mode: none
 defaults:
   run:
     shell: sh

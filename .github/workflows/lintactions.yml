@@ -35,11 +35,11 @@ jobs:
           persist-credentials: false
           set-safe-directory: false
       - name: Download and run actionlint
+        # TODO new command syntax in release post 1.17
         env:
           arg1: v1.17.0
           GH_TOKEN: ${{ github.token }}
         run: |
-          # TODO color
           set -- "$arg1"; unset -v arg1
           unset -v repo; readonly repo=kjanat/actionlint
           unset -v tempdir; tempdir=

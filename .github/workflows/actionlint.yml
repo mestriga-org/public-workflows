@@ -35,5 +35,5 @@ jobs:
         run: |
           set -- "$arg1"; unset -v arg1
           # todo --dir, --output, GH_PROMPT_DISABLED
-          gh release -R kjanat/actionlint download --pattern actionlint_"$1"_linux_amd64.tar.gz -- "${1:?}"
-          gh release -R kjanat/actionlint verify-asset "$arg1" actionlint_"$1"_linux_amd64.tar.gz
+          gh release -R kjanat/actionlint download --pattern actionlint_"${1:?}"_linux_amd64.tar.gz -- v"${1:?}"
+          gh release -R kjanat/actionlint verify-asset -- v"${1:?}" actionlint_"${1:?}"_linux_amd64.tar.gz

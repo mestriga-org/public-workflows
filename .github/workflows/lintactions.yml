@@ -41,6 +41,6 @@ jobs:
           tempdir=$(exec mktemp -d)
           command gh release -R "$repo" download --clobber -O "${tempdir:?}"/actionlint.tar.gz -p actionlint_*_linux_amd64.tar.gz -- "${1:?}"
           command gh release -R "$repo" verify-asset -- "${1:?}" "${tempdir:?}"/actionlint.tar.gz
-          command tar -C "${tempdir:?}" -xzf actionlint.tar.gz -- actionlint
+          command tar -C "${tempdir:?}" -xzf "${tempdir:?}"/actionlint.tar.gz -- actionlint
           command -p rm -- "${tempdir:?}"/actionlint.tar.gz
           command "${tempdir:?}"/actionlint --help

@@ -39,6 +39,7 @@ jobs:
           #' "${GITHUB_WORKSPACE:?}"
           CDPATH='' cd -- ~/.config/
           command -p mkdir -p pnpm
+          # shellcheck disable=SC2016
           >pnpm/config.yaml command -p printf %s\\n \
           'bail: false
           engineStrict: true

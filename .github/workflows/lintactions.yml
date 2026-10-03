@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-slim
     steps:
       - name: Configure git
-        uses: mestriga-org/public-workflows/.github/actions/git-configure@main
+        uses: $/.github/actions/git-configure
       - name: Checkout
         # TODO selective checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

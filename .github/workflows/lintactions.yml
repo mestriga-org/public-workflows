@@ -29,6 +29,11 @@ jobs:
     steps:
       - name: Configure git
         uses: mestriga-org/public-workflows/actions/git-configure@main
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          set-safe-directory: false
       - name: Download and run actionlint
         env:
           arg1: v1.17.0

@@ -39,6 +39,7 @@ jobs:
           arg1: v1.17.0
           GH_TOKEN: ${{ github.token }}
         run: |
+          # TODO color
           set -- "$arg1"; unset -v arg1
           unset -v repo; readonly repo=kjanat/actionlint
           unset -v tempdir; tempdir=
@@ -48,5 +49,4 @@ jobs:
           command gh release -R "$repo" verify-asset -- "${1:?}" "${tempdir:?}"/actionlint.tar.gz
           command tar -C "${tempdir:?}" -xzf "${tempdir:?}"/actionlint.tar.gz -- actionlint
           command -p rm -- "${tempdir:?}"/actionlint.tar.gz
-          command "${tempdir:?}"/actionlint -color
-          # todo -config-file
+          command "${tempdir:?}"/actionlint --command check --output-format=github

@@ -37,7 +37,7 @@ jobs:
           #>>"${GITHUB_ENV:?}" command -p printf \
           #'NPM_CONFIG_WORKSPACE_DIR=%s
           #' "${GITHUB_WORKSPACE:?}"
-          CDPATH= cd -- ~/.config/
+          CDPATH='' cd -- ~/.config/
           command -p mkdir -p pnpm
           >pnpm/config.yaml command -p printf %s\\n \
           'bail: false

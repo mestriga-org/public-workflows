@@ -42,6 +42,7 @@ jobs:
           set -Cfuo posix
           export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
           unset -v parent
+          # shellcheck disable=SC2120
           seterr () { return "$@"; }
           parent=$(exec git hash-object -t tree -- /dev/null)
           exec git diff-index --cached --name-only --diff-filter=A --ignore-submodules=dirty -z "${parent:?}" -- |
@@ -68,6 +69,7 @@ jobs:
         shell: bash
         run: |-
           set -Cfuo posix
+          # shellcheck disable=SC2120
           seterr () { return "$@"; }
           export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
           unset -v parent

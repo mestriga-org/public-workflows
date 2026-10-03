@@ -38,6 +38,7 @@ jobs:
         # TODO handle files names containing double quotes and (possibly) escape chars
         run: |-
           set -Cfu
+          # shellcheck disable=SC2120
           seterr() { return "$@"; }
           {
             command -p printf result=

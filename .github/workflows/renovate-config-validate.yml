@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - name: Configure git
-        uses: mestriga-org/public-workflows/actions/git-configure@main
+        uses: mestriga-org/public-workflows/.github/actions/git-configure@main
       - name: fail because checkout may be incorrect
         run: command -p false
       - name: Checkout

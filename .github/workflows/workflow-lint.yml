@@ -1,8 +1,5 @@
-on:
-  pull_request:
-    branches: [main]
-  push:
-    branches: [main]
+on: [workflow_call]
+cache-mode: none
 defaults:
   run:
     shell: sh
@@ -20,8 +17,7 @@ env:
 permissions: { }
 jobs:
   # TODO prefer diffing tree over index
-  actionlint:
-    name: Lint github actions and workflows
+  workflow-lint:
     permissions:
       contents: read
     timeout-minutes: 1

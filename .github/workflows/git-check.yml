@@ -1,4 +1,5 @@
 on: [workflow_call]
+cache-mode: none
 defaults:
   run:
     shell: sh
@@ -16,7 +17,6 @@ permissions: { }
 jobs:
   # TODO prefer diffing tree over index
   git-check:
-    name: Check git attributes
     permissions:
       contents: read
     timeout-minutes: 1

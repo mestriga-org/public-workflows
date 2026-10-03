@@ -7,6 +7,10 @@ on:
     branches: [main]
 permissions: { }
 jobs:
+  workflow-lint:
+    permissions:
+      contents: read
+    uses: $/.github/workflows/workflow-lint.yml
   git-check:
     permissions:
       contents: read
@@ -15,7 +19,3 @@ jobs:
     permissions:
       contents: read
     uses: $/.github/workflows/pnpm-run-lint.yml
-  workflow-lint:
-    permissions:
-      contents: read
-    uses: $/.github/workflows/workflow-lint.yml

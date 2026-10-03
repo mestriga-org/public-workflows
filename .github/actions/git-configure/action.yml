@@ -1,5 +1,5 @@
 name: Configure git
-description: ''
+description: Set git global configuration and environment variables
 runs:
   using: composite
   steps:

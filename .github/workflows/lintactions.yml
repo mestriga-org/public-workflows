@@ -30,12 +30,15 @@ jobs:
       - name: Configure git
         uses: mestriga-org/public-workflows/actions/git-configure@main
       - name: Checkout
+        # TODO selective checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           set-safe-directory: false
+          sparse-checkout: .github/workflows
       - name: Download and run actionlint
-        # TODO new command syntax in release post 1.17
+        # TODO new command syntax in release post 1.17: --command check --output-format github
+        # TODO renovate update
         env:
           arg1: v1.17.0
           GH_TOKEN: ${{ github.token }}

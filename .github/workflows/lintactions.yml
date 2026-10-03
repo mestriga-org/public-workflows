@@ -39,7 +39,7 @@ jobs:
           unset -v tempfile; tempfile=$(exec mktemp)
           command gh release -R "$repo" download --clobber -O "${tempfile:?}" -p actionlint_*_linux_amd64.tar.gz -- "${1:?}"
           command gh release -R "$repo" verify-asset -- "${1:?}" "${tempfile:?}"
-          ls -al ~/.local
-          #command -p tar -xzf "${tempfile:?}" actionlint
-          #CDPATH= cd -- ~/
-          #command -p mkdir -p .local/bin
+          CDPATH= cd ~/
+          command -p mkdir -p .local/bin
+          command tar -C .local/bin -xzf "${tempfile:?}" -- actionlint
+          command actionlint --help

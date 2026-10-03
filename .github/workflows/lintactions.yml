@@ -49,4 +49,4 @@ jobs:
           command gh release -R "$repo" verify-asset -- "${1:?}" "${tempdir:?}"/actionlint.tar.gz
           command tar -C "${tempdir:?}" -xzf "${tempdir:?}"/actionlint.tar.gz -- actionlint
           command -p rm -- "${tempdir:?}"/actionlint.tar.gz
-          command "${tempdir:?}"/actionlint --command check --output-format=github
+          command "${tempdir:?}"/actionlint -color

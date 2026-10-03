@@ -1,6 +1,5 @@
 config-variables: []
 config-secrets: []
-assume-default-permissions:
 policy:
   disallow-suppressions: true
   require-commit-hash: true

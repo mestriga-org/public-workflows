@@ -1,0 +1,39 @@
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+defaults:
+  run:
+    shell: sh
+env:
+  DO_NOT_TRACK: 1
+  NODE_OPTIONS: >- # for v25.8
+    --no-addons
+    --disable-proto=delete
+    --force-context-aware
+    --force-node-api-uncaught-exceptions-policy
+    --frozen-intrinsics
+    --no-global-search-paths
+    --pending-deprecation
+    --tls-min-v1.3
+permissions: { }
+jobs:
+  # TODO prefer diffing tree over index
+  actionlint:
+    name: Lint github actions and workflows
+    permissions:
+      contents: read
+    timeout-minutes: 1
+    runs-on: ubuntu-slim
+    steps:
+      - name: Configure git
+        uses: mestriga-org/public-workflows/actions/git-configure@main
+      - name: Download and run actionlint
+        env:
+          arg1: 1.17.0
+        run: |
+          set -- "$arg1"; unset -v arg1
+          # todo --dir, --output, GH_PROMPT_DISABLED
+          gh release -R kjanat/actionlint download --pattern actionlint_"$1"_linux_amd64.tar.gz -- "${1:?}"
+          gh release -R kjanat/actionlint verify-asset "$arg1" actionlint_"$1"_linux_amd64.tar.gz

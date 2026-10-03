@@ -35,6 +35,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -- "$arg1"; unset -v arg1
-          tempfile=$(exec mktemp)
-          command gh release -R kjanat/actionlint download -O "${tempfile:?}" -p actionlint_*_linux_amd64.tar.gz -- "${1:?}"
-          command gh release -R kjanat/actionlint verify-asset -- "${1:?}" "${tempfile:?}"
+          unset -v repo; readonly repo=kjanat/actionlint
+          unset -v tempfile; tempfile=$(exec mktemp)
+          command gh release -R "$repo" download --clobber -O "${tempfile:?}" -p actionlint_*_linux_amd64.tar.gz -- "${1:?}"
+          command gh release -R "$repo" verify-asset -- "${1:?}" "${tempfile:?}"

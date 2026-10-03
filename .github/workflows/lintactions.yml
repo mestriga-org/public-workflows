@@ -31,13 +31,10 @@ jobs:
         uses: mestriga-org/public-workflows/actions/git-configure@main
       - name: Download and run actionlint
         env:
-          arg1: 1.17.0
+          arg1: v1.17.0
           GH_TOKEN: ${{ github.token }}
         run: |
           set -- "$arg1"; unset -v arg1
-          # todo --dir, --output, GH_PROMPT_DISABLED
-          command gh release -R kjanat/actionlint download --pattern actionlint_"${1:?}"_linux_amd64.tar.gz -- v"${1:?}"
-          command gh release -R kjanat/actionlint verify-asset -- v"${1:?}" actionlint_"${1:?}"_linux_amd64.tar.gz
-      - name: goo
-        run:
-          ls -al /home/runner/.local/bin
+          tempfile=$(exec mktemp)
+          command gh release -R kjanat/actionlint download -O "${tempfile:?}" -p actionlint_*_linux_amd64.tar.gz -- "${1:?}"
+          command gh release -R kjanat/actionlint verify-asset -- "${1:?}" "${tempfile:?}"

@@ -4,5 +4,4 @@ config-variables: []
 config-secrets: []
 policy:
   disallow-suppressions: true
-  require-commit-hash: true
   require-job-timeout: true

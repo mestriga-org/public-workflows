@@ -97,6 +97,6 @@ jobs:
           set -Cfu
           unset -v parent
           parent=$(exec git hash-object -t tree -- /dev/null)
-          exec "${GIT_EXEC_PATH:?}"/git diff-index \
+          exec git diff-index \
               --no-prefix -U0 --quiet --cached \
               --diff-filter=AMT -G$'[^\x01-\xFF]' "${parent:?}" --

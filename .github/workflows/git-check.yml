@@ -18,8 +18,6 @@ permissions: { }
 jobs:
   # TODO prefer diffing tree over index
   git-check:
-    permissions:
-      contents: read
     timeout-minutes: 1
     runs-on: ubuntu-slim
     steps:

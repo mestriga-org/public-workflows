@@ -39,7 +39,7 @@ jobs:
       - name: Verify actions.lock
         env:
           GH_TOKEN: ${{ github.token }}
-        run: exec gh actions-lock --verify
+        run: exec gh actions-lock --verify-local
       - name: Install actionlint
         env:
           arg1: v1.17.0

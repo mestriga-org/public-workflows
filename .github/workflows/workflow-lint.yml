@@ -1,6 +1,13 @@
 # This workflow is managed by gh actions-lock.
 
-on: [workflow_call]
+on:
+  workflow_call:
+  merge_group:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
 defaults:
   run:
     shell: sh

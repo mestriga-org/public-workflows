@@ -12,9 +12,9 @@
 *.yaml text whitespace=tabwidth=2,tab-in-indent
 *.yml  text whitespace=tabwidth=2,tab-in-indent
 
-.github/workflows/actions.lock text whitespace=tabwidth=2,tab-in-indent eol=lf
-
 /pnpm-lock.yaml      eol=lf
 /pnpm-workspace.yaml eol=lf
 
 /.node-version text working-tree-encoding=ASCII
+
+.github/workflows/actions.lock text whitespace=tabwidth=2,tab-in-indent eol=lf

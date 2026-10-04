@@ -93,8 +93,9 @@ jobs:
                 done
             }
       - name: Check null char in text diff
+        shell: bash
         run: |-
-          set -Cfu
+          set -Cfuo posix
           unset -v parent
           parent=$(exec git hash-object -t tree -- /dev/null)
           exec git diff-index \

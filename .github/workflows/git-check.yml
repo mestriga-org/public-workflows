@@ -69,7 +69,6 @@ jobs:
         shell: bash
         run: |-
           set -Cfuo posix
-          # shellcheck disable=SC2120
           seterr () { return; }
           export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
           unset -v parent

@@ -25,6 +25,8 @@ env:
 permissions: {}
 jobs:
   workflow-lint:
+    permissions:
+      contents: read
     timeout-minutes: 1
     runs-on: ubuntu-slim
     steps:

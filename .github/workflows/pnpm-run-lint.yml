@@ -25,6 +25,8 @@ env:
 permissions: {}
 jobs:
   pnpm-run-lint:
+    permissions:
+      contents: read
     timeout-minutes: 3
     runs-on: ubuntu-slim
     steps:

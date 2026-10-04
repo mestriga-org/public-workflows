@@ -1,3 +1,5 @@
+# This workflow is managed by gh actions-lock.
+
 on:
   merge_group:
     branches: [main]

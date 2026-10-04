@@ -1,3 +1,5 @@
+# This workflow is managed by gh actions-lock.
+
 on: [workflow_call]
 # TODO: validate pnpm config by reading yaml before pnpm setup
 # TODO: require all side effects to be already cached on reinstall
@@ -54,7 +56,7 @@ jobs:
           trustPolicy: no-downgrade
           verifyDepsBeforeRun: error'
       - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           set-safe-directory: false
@@ -84,7 +86,7 @@ jobs:
       - name: Setup pnpm
         # This requires a package.json with a packageManager field matching "pnpm@"
         # The version may be partial
-        uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
+        uses: pnpm/setup@v3.0.0
         with:
           require-lockfile: true
           node-version-file: .node-version

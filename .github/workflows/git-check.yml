@@ -45,7 +45,7 @@ jobs:
           unset -v parent
           seterr () { return; }
           parent=$(exec git hash-object -t tree -- /dev/null)
-          exec git diff-index --cached --name-only --diff-filter=A -z "${parent:?}" -- |
+          exec git diff-index -z --cached --name-only --diff-filter=A "${parent:?}" -- |
               command -p xargs -r -0 -- git --literal-pathspecs ls-files -ci --exclude-standard -- |
               {
                   unset -v -- path
@@ -74,7 +74,7 @@ jobs:
           export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
           unset -v parent
           parent=$(exec git hash-object -t tree -- /dev/null)
-          exec git diff-index --cached --name-only --diff-filter=AMT -z "${parent:?}" -- |
+          exec git diff-index -z --cached --name-only --diff-filter=d "${parent:?}" -- |
             command -p xargs -r -0 -- git --literal-pathspecs ls-files -c --error-unmatch --format='.%(eolinfo:index)%x09.%(eolattr)%x09%(path)' -- |
             {
                 unset -v -- info attr path
@@ -98,6 +98,4 @@ jobs:
           set -Cfuo posix
           unset -v parent
           parent=$(exec git hash-object -t tree -- /dev/null)
-          exec git diff-index \
-              --no-prefix -U0 --quiet --cached \
-              --diff-filter=AMT -G$'[^\x01-\xFF]' "${parent:?}" --
+          exec git diff-index --quiet --cached -G$'[^\x01-\xFF]' "${parent:?}" --

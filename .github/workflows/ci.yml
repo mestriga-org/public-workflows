@@ -11,10 +11,8 @@ on:
 permissions: { }
 jobs:
   git-check:
-    permissions:
-      contents: read
+    permissions: { }
     uses: $/.github/workflows/git-check.yml
   pnpm-run-lint:
-    permissions:
-      contents: read
+    permissions: { }
     uses: $/.github/workflows/pnpm-run-lint.yml

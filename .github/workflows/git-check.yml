@@ -14,7 +14,7 @@ env:
     --no-global-search-paths
     --pending-deprecation
     --tls-min-v1.3
-permissions: { }
+permissions: {}
 jobs:
   # TODO prefer diffing tree over index
   git-check:

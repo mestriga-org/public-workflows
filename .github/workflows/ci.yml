@@ -8,11 +8,9 @@ on:
     branches: [main]
   push:
     branches: [main]
-permissions: { }
+permissions: {}
 jobs:
   git-check:
-    permissions: { }
     uses: $/.github/workflows/git-check.yml
   pnpm-run-lint:
-    permissions: { }
     uses: $/.github/workflows/pnpm-run-lint.yml

@@ -1,6 +1,11 @@
 # This workflow is managed by gh actions-lock.
 
-on: [workflow_call]
+on:
+  merge_group:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_call:
 # TODO: validate pnpm config by reading yaml before pnpm setup
 # TODO: require all side effects to be already cached on reinstall
 # TODO: reporter

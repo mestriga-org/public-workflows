@@ -4,12 +4,9 @@ merge_protections:
       - head *= renovate/*
     success_conditions:
       - check-success = renovate/artifacts
-  - name: workflow-lint
-    if: []
-    success_conditions:
-      - check-success = workflow-lint
   - name: ci
     if: []
     success_conditions:
+      - check-success = workflow-lint
       - check-success = git-check
       - check-success = pnpm-run-lint

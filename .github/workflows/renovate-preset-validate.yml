@@ -58,7 +58,7 @@ jobs:
             esac
             command -p echo
           }>>"$GITHUB_OUTPUT"
-      - uses: docker://renovate/renovate:44.132.2@sha256:0191afbc3937e5316263426fc0ce1450f5c143d42e3f91da8c6f771e317fae51
+      - uses: docker://renovate/renovate:44.137.0@sha256:805dbf260d627b5dc53a59be9c26b7be2854977e47d3c94366e97b6cadc4a626
         with:
           entrypoint: renovate-config-validator
           args: --strict --no-global -- default.json${{ steps.glob-presets.outputs.result }}

@@ -14,5 +14,5 @@ runs:
           })
           const regex = /^renovate\//
           for (const { context, state } of data)
-            if (regex.test(context) && 'success' !== state)
-              core.setFailed('Renovate commit status with nonsuccess state.')
+            if (regex.test(context) && state !== 'success')
+              core.setFailed(context)

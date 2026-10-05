@@ -3,6 +3,8 @@
 # Docs: https://gh.io/actions-lockfile
 version: 'v0.0.2'
 workflows:
+    '.github/workflows/ci.yml':
+        - 'actions/github-script@v9.0.0'
     '.github/workflows/git-check.yml':
         - 'actions/checkout@v7.0.1'
     '.github/workflows/pnpm-run-lint.yml':
@@ -22,6 +24,11 @@ dependencies:
         commit: 'sha1-3d3c42e5aac5ba805825da76410c181273ba90b1'
         owner_id: 44036562
         repo_id: 197814629
+    'actions/github-script@v9.0.0':
+        ref: 'v9.0.0'
+        commit: 'sha1-3a2844b7e9c422d3c10d287c895573f7108da1b3'
+        owner_id: 44036562
+        repo_id: 205262760
     'pnpm/setup@v3.0.0':
         ref: 'v3.0.0'
         commit: 'sha1-fbda4c85fc2e1e08721cd8763afea8f48d60f024'

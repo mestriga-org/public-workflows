@@ -1,3 +1,5 @@
+# This workflow is managed by gh actions-lock.
+
 
 name: CI
 on:
@@ -21,11 +23,11 @@ jobs:
         if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
         run: exit 1
       - if: startsWith(github.head_ref, 'renovate/')
-        uses: actions/github-script@v9
+        uses: actions/github-script@v9.0.0
         # TODO see if should use sha
         with:
           script: |-
-            const response = await github.rest.commits.listCommitStatusesForRef({
+            const response = await github.rest.repos.listCommitStatusesForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.sha,

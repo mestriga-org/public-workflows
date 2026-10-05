@@ -29,7 +29,7 @@ jobs:
             const response = await github.rest.repos.listCommitStatusesForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: context.sha,
+              ref: context.payload.pull_request.head.sha
             })
             console.log(response)
       - run: exit 1

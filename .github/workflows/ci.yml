@@ -29,6 +29,7 @@ jobs:
     permissions:
       statuses: read
     uses: $/.github/workflows/renovate-status-check.yml
+  # TODO: maybe use another job to filter on conclusion
   ci-success:
     if: always()
     needs:

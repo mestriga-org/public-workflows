@@ -64,12 +64,13 @@ jobs:
       - name: Run actionlint
         run: |-
           set -Cfu --
-          command -p [ -e .github/actionlint.yaml ] || {
-              unset -v tempfile; tempfile=
-              trap 'case $tempfile in ("") ;; (*) command -p rm -- "${tempfile:?}"; esac' EXIT
-              tempfile=$(exec mktemp)
-              readonly tempfile
-              >>"${tempfile:?}" command -p printf %s "\
+          unset -v config_file
+          config_file=.github/actionlint.yaml
+          command -p [ -e "${config_file:?}" ] || {
+              config_file=
+              trap 'case $config_file in ("") ;; (*) command -p rm -- "${config_file:?}"; esac' EXIT
+              config_file=$(exec mktemp)
+              >>"${config_file:?}" command -p printf %s "\
           # yaml-language-server: \$schema=https://raw.githubusercontent.com/kjanat/actionlint/refs/tags/v1.17.0/actionlint.schema.json
           # https://github.com/kjanat/actionlint/blob/v1.17.0/docs/config.md
           config-variables: []
@@ -78,6 +79,5 @@ jobs:
               disallow-suppressions: true
               require-job-timeout: true
           "
-              set -- -config-file "${tempfile:?}"
           }
-          exec actionlint -color "$@"
+          command actionlint -color -config-file "${config_file:?}"

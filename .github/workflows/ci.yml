@@ -32,3 +32,4 @@ jobs:
               ref: context.sha,
             })
             console.log(response)
+      - run: exit 1

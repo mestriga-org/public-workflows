@@ -2,15 +2,12 @@
 indent_size = 4
 indent_style = tab
 
-[*.{json,ts}]
+[*.json]
 indent_size = 2
 
 [*.y{aml,ml}]
 indent_size = 2
 indent_style = space
-
-[/pnpm-{lock,workspace}.yaml]
-end_of_line = lf
 
 [.github/workflows/actions.lock]
 indent_size = 2

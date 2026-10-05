@@ -3,9 +3,7 @@
 name: CI
 on:
   merge_group:
-    branches: [main]
   pull_request:
-    branches: [main]
   push:
     branches: [main]
 permissions: {}

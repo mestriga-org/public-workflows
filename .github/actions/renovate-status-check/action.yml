@@ -12,5 +12,7 @@ runs:
             repo: context.repo.repo,
             ref: context.payload.pull_request.head.sha
           })
-          const { state } = data.find(({ context }) => context === 'renovate/artifacts')
-          if ('success' !== state) core.setFailed(state)
+          const regex = /^renovate\//
+          for (const { context, state } of data)
+            if (regex.test(context) && 'success' !== state)
+              core.setFailed('Renovate commit status with nonsuccess state.')

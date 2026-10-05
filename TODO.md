@@ -5,3 +5,4 @@
 - provide empty actions.lock
 - actionlint version update
 - check individual pr commits
+- https://github.com/suzuki-shunsuke/renovate-config-validator

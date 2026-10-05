@@ -26,10 +26,11 @@ jobs:
         # TODO see if should use sha
         with:
           script: |-
-            const response = await github.rest.repos.listCommitStatusesForRef({
+            const { data } = await github.rest.repos.listCommitStatusesForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.payload.pull_request.head.sha
             })
-            console.log(response)
+            const { state } = data.find({ context } => context === 'renovate/artifacts')
+            if ('success' !== state) core.setFailed(state)
       - run: exit 1

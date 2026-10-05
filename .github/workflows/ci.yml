@@ -25,18 +25,14 @@ jobs:
     permissions:
       contents: read
     uses: $/.github/workflows/git-check.yml
-  renovate-status-check:
-    permissions:
-      statuses: read
-    uses: $/.github/workflows/renovate-status-check.yml
   ci-success:
     if: always()
     needs:
       - git-check
-      - renovate-status-check
     runs-on: ubuntu-slim
     timeout-minutes: 1
     steps:
-      - name: Fail if any dependency failed or was cancelled
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-        run: exit 1
+      - parallel:
+        - uses: $/.github/actions/renovate-status-check
+        - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+          run: exit 1

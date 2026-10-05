@@ -34,5 +34,6 @@ jobs:
     steps:
       - parallel:
         - uses: $/.github/actions/renovate-status-check
+        # https://github.com/orgs/community/discussions/45058#discussioncomment-7465690
         - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
           run: exit 1

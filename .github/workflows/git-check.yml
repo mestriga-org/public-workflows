@@ -36,66 +36,66 @@ jobs:
           # https://docs.github.com/repositories/working-with-files/managing-large-files/about-large-files-on-github#file-size-limits
           filter: blob:limit=100m
       - parallel:
-        - name: Check excludes
-          # fails if any added items are ignored
-          # todo review submodules
-          shell: bash
-          run: |-
-            set -Cfuo posix
-            export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
-            unset -v parent
-            seterr () { return; }
-            parent=$(exec git hash-object -t tree -- /dev/null)
-            exec git diff-index -z --cached --name-only --diff-filter=A "${parent:?}" -- |
-                command -p xargs -r -0 -- git --literal-pathspecs ls-files -ci --exclude-standard -- |
+          - name: Check excludes
+            # fails if any added items are ignored
+            # todo review submodules
+            shell: bash
+            run: |-
+              set -Cfuo posix
+              export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
+              unset -v parent
+              seterr () { return; }
+              parent=$(exec git hash-object -t tree -- /dev/null)
+              exec git diff-index -z --cached --name-only --diff-filter=A "${parent:?}" -- |
+                  command -p xargs -r -0 -- git --literal-pathspecs ls-files -ci --exclude-standard -- |
+                  {
+                      unset -v -- path
+                      while :; do
+                          IFS= read -r -- path || case $? in (1) break;; (*) seterr; esac
+                          >&2 command -p printf 'Adding ignored file %s\n' "${path:?}"
+                          exit 150
+                      done
+                  }
+          - name: Check whitespace attributes
+            run: |-
+              set -Cfu
+              export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
+              unset -v parent
+              parent=$(exec git hash-object -t tree -- /dev/null)
+              exec git -c core.whitespace=tabwidth=1,indent_with_nontab diff-index --cached --check "${parent:?}" --
+          - name: Check text attributes
+            # What this does:
+            # - forbids binary files with attribute text=true
+            # - forbids non-binary files containing crlfs without attribute -text
+            shell: bash
+            run: |-
+              set -Cfuo posix
+              seterr () { return; }
+              export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
+              unset -v parent
+              parent=$(exec git hash-object -t tree -- /dev/null)
+              exec git diff-index -z --cached --name-only --diff-filter=d "${parent:?}" -- |
+                command -p xargs -r -0 -- git --literal-pathspecs ls-files -c --error-unmatch --format='.%(eolinfo:index)%x09.%(eolattr)%x09%(path)' -- |
                 {
-                    unset -v -- path
+                    unset -v -- info attr path
                     while :; do
-                        IFS= read -r -- path || case $? in (1) break;; (*) seterr; esac
-                        >&2 command -p printf 'Adding ignored file %s\n' "${path:?}"
+                        IFS=$'\t' read -r -- info attr path || case $? in (1) break;; (*) seterr; esac
+                        info=${info#.}
+                        case $info in ('') continue; esac
+                        attr=${attr#.}
+                        case $attr in (-text) continue; esac
+                        case ${info:?} in
+                            (lf|none) continue
+                        ;;  (-text) case $attr in (''|text=auto*) continue; esac
+                        esac
+                        >&2 command -p printf "File with eolinfo '%s' and eolattr '%s': %s\\n" "${info:?}" "$attr" "${path:?}"
                         exit 150
                     done
                 }
-        - name: Check whitespace attributes
-          run: |-
-            set -Cfu
-            export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
-            unset -v parent
-            parent=$(exec git hash-object -t tree -- /dev/null)
-            exec git -c core.whitespace=tabwidth=1,indent_with_nontab diff-index --cached --check "${parent:?}" --
-        - name: Check text attributes
-          # What this does:
-          # - forbids binary files with attribute text=true
-          # - forbids non-binary files containing crlfs without attribute -text
-          shell: bash
-          run: |-
-            set -Cfuo posix
-            seterr () { return; }
-            export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
-            unset -v parent
-            parent=$(exec git hash-object -t tree -- /dev/null)
-            exec git diff-index -z --cached --name-only --diff-filter=d "${parent:?}" -- |
-              command -p xargs -r -0 -- git --literal-pathspecs ls-files -c --error-unmatch --format='.%(eolinfo:index)%x09.%(eolattr)%x09%(path)' -- |
-              {
-                  unset -v -- info attr path
-                  while :; do
-                      IFS=$'\t' read -r -- info attr path || case $? in (1) break;; (*) seterr; esac
-                      info=${info#.}
-                      case $info in ('') continue; esac
-                      attr=${attr#.}
-                      case $attr in (-text) continue; esac
-                      case ${info:?} in
-                          (lf|none) continue
-                      ;;  (-text) case $attr in (''|text=auto*) continue; esac
-                      esac
-                      >&2 command -p printf "File with eolinfo '%s' and eolattr '%s': %s\\n" "${info:?}" "$attr" "${path:?}"
-                      exit 150
-                  done
-              }
-        - name: Check null char in text diff
-          shell: bash
-          run: |-
-            set -Cfuo posix
-            unset -v parent
-            parent=$(exec git hash-object -t tree -- /dev/null)
-            exec git diff-index --quiet --cached -G$'[^\x01-\xFF]' "${parent:?}" --
+          - name: Check null char in text diff
+            shell: bash
+            run: |-
+              set -Cfuo posix
+              unset -v parent
+              parent=$(exec git hash-object -t tree -- /dev/null)
+              exec git diff-index --quiet --cached -G$'[^\x01-\xFF]' "${parent:?}" --

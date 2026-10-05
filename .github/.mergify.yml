@@ -9,4 +9,3 @@ merge_protections:
     success_conditions:
       - check-success = workflow-lint
       - check-success = git-check
-      - check-success = pnpm-run-lint

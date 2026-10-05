@@ -30,6 +30,7 @@ jobs:
     permissions:
       statuses: read
     runs-on: ubuntu-slim
+    timeout-minutes: 1
     steps:
       - uses: actions/github-script@v9.0.0
         with:
@@ -47,6 +48,7 @@ jobs:
       - git-check
       - renovate-artifacts-status-check
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
       - name: Fail if any dependency failed or was cancelled
         if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')

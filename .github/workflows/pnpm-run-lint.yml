@@ -6,14 +6,6 @@ on:
   push:
     branches: [main]
   workflow_call:
-# TODO: validate pnpm config by reading yaml before pnpm setup
-# TODO: require all side effects to be already cached on reinstall
-# TODO: reporter
-# TODO: review cache key for pnpm dedupe
-# TODO: put .pnpm-store in workspace root
-# TODO: use fetch (see enableModulesDir/virtualStoreOnly, handle side effect caching)
-# TODO: use @pnpm/mount-modules with fetch
-# TODO: audit
 defaults:
   run:
     shell: sh
@@ -29,6 +21,14 @@ env:
     --tls-min-v1.3
 permissions: {}
 jobs:
+  # TODO: validate pnpm config by reading yaml before pnpm setup
+  # TODO: require all side effects to be already cached on reinstall
+  # TODO: reporter
+  # TODO: review cache key for pnpm dedupe
+  # TODO: put .pnpm-store in workspace root
+  # TODO: use fetch (see enableModulesDir/virtualStoreOnly, handle side effect caching)
+  # TODO: use @pnpm/mount-modules with fetch
+  # TODO: audit
   pnpm-run-lint:
     permissions:
       contents: read

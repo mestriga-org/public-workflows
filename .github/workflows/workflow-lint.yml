@@ -51,6 +51,7 @@ jobs:
           arg1: v1.17.0
           GH_TOKEN: ${{ github.token }}
         run: |-
+          set -Cfu
           set -- "$arg1"; unset -v arg1
           unset -v repo; readonly repo=kjanat/actionlint
           unset -v tempfile; tempfile=
@@ -61,4 +62,20 @@ jobs:
           (CDPATH='' cd -- ~/; command -p mkdir -p .local/bin)
           command tar -C ~/.local/bin -xzf "${tempfile:?}" -- actionlint
       - name: Run actionlint
-        run: exec actionlint -color
+        run: |-
+          set -Cfu --
+          command -p [ -e .github/actionlint.yaml ] || {
+              unset -v tempfile; tempfile=
+              trap 'case $tempfile in ("") ;; (*) command -p rm -- "${tempfile:?}"; esac' EXIT
+              tempfile=$(exec mktemp)
+              readonly tempfile
+              >>"${tempfile:?}" command -p printf %s "\
+          config-variables: []
+          config-secrets: []
+          policy:
+              disallow-suppressions: true
+              require-job-timeout: true
+          "
+              set -- -config-file "${tempfile:?}"
+          }
+          exec actionlint -color "$@"

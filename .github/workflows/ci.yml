@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
+      - run: echo ${{ needs.renovate-status-check.result }}
       - name: Fail if any dependency failed or was cancelled
         if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
         run: exit 1

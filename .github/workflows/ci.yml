@@ -1,3 +1,4 @@
+# This workflow is managed by gh actions-lock.
 
 name: CI
 on:

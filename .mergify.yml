@@ -1,0 +1,6 @@
+merge_protections:
+  - name: renovate/artifacts
+    if:
+      - head *= renovate/*
+    success_conditions:
+      - check-success = renovate/artifacts

@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/github-script@v9.0.0
         with:
-          script: |-
+          script: |
             const { data } = await github.rest.repos.listCommitStatusesForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,

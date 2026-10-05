@@ -34,7 +34,7 @@ jobs:
       - name: Configure git
         uses: $/.github/actions/git-configure
       - name: Configure pnpm
-        run: |-
+        run: |
           set -Cfu
           # makes git dependency installation fail:
           #>>"${GITHUB_ENV:?}" command -p printf \
@@ -62,7 +62,7 @@ jobs:
           persist-credentials: false
           set-safe-directory: false
       - name: Validate pnpm-workspace.yaml
-        run: |-
+        run: |
           set -Cfu
           >/dev/null exec yq -e --yaml-fix-merge-anchor-to-spec -- 'keys - [
             "packages",
@@ -95,7 +95,7 @@ jobs:
           NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
           PNPM_CONFIG_PM_ON_FAIL: download # https://github.com/pnpm/setup/issues/57
       - name: Pnpm config path
-        run: |-
+        run: |
           set -Cfu
           config=$(exec pnpm pm --dir . config get globalconfig)
           command -p test ~/.config/pnpm/config.yaml -ef "$config"

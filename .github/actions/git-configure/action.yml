@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
     - shell: sh
-      run: |-
+      run: |
         # for git v2.54
         set -Cfu
         >>"${GITHUB_ENV:?}" command -p printf \

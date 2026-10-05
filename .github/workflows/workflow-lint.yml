@@ -48,7 +48,7 @@ jobs:
         env:
           arg1: v1.17.0
           GH_TOKEN: ${{ github.token }}
-        run: |-
+        run: |
           set -Cfu
           set -- "$arg1"; unset -v arg1
           unset -v repo; readonly repo=kjanat/actionlint
@@ -60,7 +60,7 @@ jobs:
           (CDPATH='' cd -- ~/; command -p mkdir -p .local/bin)
           command tar -C ~/.local/bin -xzf "${tempfile:?}" -- actionlint
       - name: Run actionlint
-        run: |-
+        run: |
           set -Cfu --
           unset -v config_file
           config_file=.github/actionlint.yaml

@@ -39,7 +39,7 @@ jobs:
             !*/
       - id: glob-presets
         # TODO handle files names containing double quotes and (possibly) escape chars
-        run: |-
+        run: |
           set -Cfu
           # shellcheck disable=SC2120
           seterr() { return "$@"; }

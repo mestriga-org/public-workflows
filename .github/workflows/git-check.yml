@@ -41,7 +41,7 @@ jobs:
             # fails if any added items are ignored
             # todo review submodules
             shell: bash
-            run: |-
+            run: |
               set -Cfuo posix
               export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
               unset -v parent
@@ -58,7 +58,7 @@ jobs:
                       done
                   }
           - name: Check whitespace attributes
-            run: |-
+            run: |
               set -Cfu
               export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
               unset -v parent
@@ -69,7 +69,7 @@ jobs:
             # - forbids binary files with attribute text=true
             # - forbids non-binary files containing crlfs without attribute -text
             shell: bash
-            run: |-
+            run: |
               set -Cfuo posix
               seterr () { return; }
               export GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS=true
@@ -95,7 +95,7 @@ jobs:
                 }
           - name: Check null char in text diff
             shell: bash
-            run: |-
+            run: |
               set -Cfuo posix
               unset -v parent
               parent=$(exec git hash-object -t tree -- /dev/null)

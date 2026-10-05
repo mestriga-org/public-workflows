@@ -1,7 +1,0 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kjanat/actionlint/refs/tags/v1.17.0/actionlint.schema.json
-# https://github.com/kjanat/actionlint/blob/v1.17.0/docs/config.md
-config-variables: []
-config-secrets: []
-policy:
-  disallow-suppressions: true
-  require-job-timeout: true

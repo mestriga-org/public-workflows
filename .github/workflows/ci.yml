@@ -6,24 +6,32 @@ on:
   pull_request:
   push:
     branches: [main]
-permissions: { }
+defaults:
+  run:
+    shell: sh
+env:
+  NODE_OPTIONS: >- # for v25.8
+    --no-addons
+    --disable-proto=delete
+    --force-context-aware
+    --force-node-api-uncaught-exceptions-policy
+    --frozen-intrinsics
+    --no-global-search-paths
+    --pending-deprecation
+    --tls-min-v1.3
+permissions: {}
 jobs:
   git-check:
     permissions:
       contents: read
     uses: $/.github/workflows/git-check.yml
-  success:
-    if: always()
-    needs:
-      - git-check
-    runs-on: ubuntu-latest
+  renovate-artifacts-status-check:
+    if: startsWith(github.head_ref, 'renovate/')
+    permissions:
+      statuses: read
+    runs-on: ubuntu-slim
     steps:
-      - name: Fail if any dependency failed or was cancelled
-        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-        run: exit 1
-      - if: startsWith(github.head_ref, 'renovate/')
-        uses: actions/github-script@v9.0.0
-        # TODO see if should use sha
+      - uses: actions/github-script@v9.0.0
         with:
           script: |-
             const { data } = await github.rest.repos.listCommitStatusesForRef({
@@ -33,4 +41,13 @@ jobs:
             })
             const { state } = data.find(({ context }) => context === 'renovate/artifacts')
             if ('success' !== state) core.setFailed(state)
-      - run: exit 1
+  ci-success:
+    if: always()
+    needs:
+      - git-check
+      - renovate-artifacts-status-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any dependency failed or was cancelled
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1

@@ -6,7 +6,8 @@ runs:
     - shell: sh
       run: |
         # for node # for v25.8
-        set -Cfu -- \
+        set -Cfu
+        set -- \
           --no-addons \
           --disable-proto=delete \
           --force-context-aware \

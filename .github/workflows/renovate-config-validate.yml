@@ -1,5 +1,6 @@
 # This workflow is managed by gh actions-lock.
 
+name: Renovate config validation
 on:
   workflow_call:
 defaults:

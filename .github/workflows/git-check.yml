@@ -1,5 +1,6 @@
 # This workflow is managed by gh actions-lock.
 
+name: Git check
 on:
   workflow_call:
 defaults:
@@ -19,7 +20,6 @@ permissions: {}
 jobs:
   # TODO prefer diffing tree over index
   git-check:
-    name: Check git attributes
     permissions:
       contents: read
     timeout-minutes: 1

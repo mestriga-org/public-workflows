@@ -1,6 +1,6 @@
 # This workflow is managed by gh actions-lock.
 
-on:
+on broken:
   merge_group:
   pull_request:
   push:

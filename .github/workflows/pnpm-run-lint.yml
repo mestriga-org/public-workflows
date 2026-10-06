@@ -1,11 +1,21 @@
 # This workflow is managed by gh actions-lock.
 
-name: Pnpm lint (reusable)
+name: Pnpm lint
 on:
   workflow_call:
 defaults:
   run:
     shell: sh
+env:
+  NODE_OPTIONS: >- # for v25.8
+    --no-addons
+    --disable-proto=delete
+    --force-context-aware
+    --force-node-api-uncaught-exceptions-policy
+    --frozen-intrinsics
+    --no-global-search-paths
+    --pending-deprecation
+    --tls-min-v1.3
 permissions: {}
 jobs:
   # TODO: validate pnpm config by reading yaml before pnpm setup

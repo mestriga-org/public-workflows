@@ -13,7 +13,15 @@ defaults:
   run:
     shell: sh
 env:
-  DO_NOT_TRACK: 1
+  NODE_OPTIONS: >- # for v25.8
+    --no-addons
+    --disable-proto=delete
+    --force-context-aware
+    --force-node-api-uncaught-exceptions-policy
+    --frozen-intrinsics
+    --no-global-search-paths
+    --pending-deprecation
+    --tls-min-v1.3
 permissions: {}
 jobs:
   workflow-lint:

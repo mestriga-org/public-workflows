@@ -6,3 +6,4 @@
 - actionlint version update
 - check individual pr commits
 - https://github.com/suzuki-shunsuke/renovate-config-validator
+- https://github.com/step-security/release-downloader

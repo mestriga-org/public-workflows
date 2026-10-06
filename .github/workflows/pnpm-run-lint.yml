@@ -1,5 +1,6 @@
 # This workflow is managed by gh actions-lock.
-name: Pnpm lint
+
+name: Pnpm lint (reusable)
 on:
   workflow_call:
 defaults:

@@ -25,7 +25,6 @@ env:
 permissions: {}
 jobs:
   git-check:
-    name: git check me
     permissions:
       contents: read
     uses: $/.github/workflows/git-check.yml

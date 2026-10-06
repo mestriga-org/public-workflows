@@ -28,12 +28,15 @@ jobs:
     permissions:
       contents: read
     uses: $/.github/workflows/git-check.yml
+  # !cancelled() && !success()
   ci-success:
     if: always()
-    needs:
-      - git-check
+    permissions:
+      statuses: read
     runs-on: ubuntu-slim
     timeout-minutes: 1
+    needs:
+      - git-check
     steps:
       - parallel:
         - uses: $/.github/actions/renovate-status-check

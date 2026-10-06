@@ -1,4 +1,4 @@
-name: Rnovate commit status check
+name: Reovate commit status check
 description: Checks renovate commit statuses
 runs:
   using: composite

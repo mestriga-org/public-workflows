@@ -1,6 +1,7 @@
 # This workflow is managed by gh actions-lock.
 
 name: Git check
+run-name: Checkint git attributes
 on:
   workflow_call:
 defaults:

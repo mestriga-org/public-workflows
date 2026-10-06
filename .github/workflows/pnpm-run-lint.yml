@@ -31,31 +31,32 @@ jobs:
     timeout-minutes: 3
     runs-on: ubuntu-slim
     steps:
-      - name: Configure git
-        uses: $/.github/actions/git-configure
-      - name: Configure pnpm
-        run: |
-          set -Cfu
-          # makes git dependency installation fail:
-          #>>"${GITHUB_ENV:?}" command -p printf \
-          #'NPM_CONFIG_WORKSPACE_DIR=%s
-          #' "${GITHUB_WORKSPACE:?}"
-          CDPATH='' cd -- ~/.config/
-          command -p mkdir -p pnpm
-          # shellcheck disable=SC2016
-          >pnpm/config.yaml command -p printf %s\\n \
-          'bail: false
-          engineStrict: true
-          fetchRetryMaxtimeout: 10000
-          fetchTimeout: 15000
-          minimumReleaseAgeIgnoreMissingTime: false
-          minimumReleaseAgeStrict: true
-          modulesCacheMaxAge: 0
-          nodeOptions: ${NODE_OPTIONS}
-          packageImportMethod: hardlink
-          pmOnFail: error
-          trustPolicy: no-downgrade
-          verifyDepsBeforeRun: error'
+      - parallel:
+        - name: Configure git
+          uses: $/.github/actions/git-configure
+        - name: Configure pnpm
+          run: |
+            set -Cfu
+            # makes git dependency installation fail:
+            #>>"${GITHUB_ENV:?}" command -p printf \
+            #'NPM_CONFIG_WORKSPACE_DIR=%s
+            #' "${GITHUB_WORKSPACE:?}"
+            CDPATH='' cd -- ~/.config/
+            command -p mkdir -p pnpm
+            # shellcheck disable=SC2016
+            >pnpm/config.yaml command -p printf %s\\n \
+            'bail: false
+            engineStrict: true
+            fetchRetryMaxtimeout: 10000
+            fetchTimeout: 15000
+            minimumReleaseAgeIgnoreMissingTime: false
+            minimumReleaseAgeStrict: true
+            modulesCacheMaxAge: 0
+            nodeOptions: ${NODE_OPTIONS}
+            packageImportMethod: hardlink
+            pmOnFail: error
+            trustPolicy: no-downgrade
+            verifyDepsBeforeRun: error'
       - name: Checkout
         uses: actions/checkout@v7.0.1
         with:

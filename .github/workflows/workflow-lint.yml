@@ -1,5 +1,5 @@
 # This workflow is managed by gh actions-lock.
-
+name: Workflow lint
 on:
   merge_group:
   pull_request:
@@ -26,7 +26,6 @@ env:
 permissions: {}
 jobs:
   workflow-lint:
-    name: Workflow lint
     permissions:
       contents: read
     timeout-minutes: 1

@@ -28,9 +28,8 @@ jobs:
     permissions:
       contents: read
     uses: $/.github/workflows/git-check.yml
-  # !cancelled() && !success()
   ci-success:
-    if: always()
+    if: (!cancelled())
     permissions:
       statuses: read
     runs-on: ubuntu-slim
@@ -39,6 +38,7 @@ jobs:
       - git-check
     steps:
       - parallel:
+        # TODO see if should look at commit or pr for renovate checks
         - uses: $/.github/actions/renovate-status-check
         # https://github.com/orgs/community/discussions/45058#discussioncomment-7465690
         - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')

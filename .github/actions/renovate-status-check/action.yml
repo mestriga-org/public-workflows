@@ -7,14 +7,17 @@ runs:
       uses: actions/github-script@v9.0.0
       with:
         script: |
-          const { data } = await github.rest.repos.listCommitStatusesForRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: github.ref
-          })
-          console.log(data)
-          console.setFailed("testing")
-          const regex = /^renovate\//
-          for (const { context, state } of data)
-            if (regex.test(context) && state !== 'success')
-              core.setFailed(context)
+          const ref = context.payload.pull_request.head.ref.substring('renovate/'.length)
+          if (ref === 'configure') return
+          const context = `renovate/${ref === 'reconfigure' ? 'configValidation' : 'artifacts'}`
+          let success = null
+          for (const data of (
+            await github.rest.repos.listCommitStatusesForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.payload.pull_request.head.sha
+            })
+          ).data)
+            if (data.context === context && !(success = data.status === 'success'))
+                break
+          if (!success) core.setFailed('')

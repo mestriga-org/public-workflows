@@ -6,16 +6,6 @@ on:
 defaults:
   run:
     shell: sh
-env:
-  NODE_OPTIONS: >- # for v25.8
-    --no-addons
-    --disable-proto=delete
-    --force-context-aware
-    --force-node-api-uncaught-exceptions-policy
-    --frozen-intrinsics
-    --no-global-search-paths
-    --pending-deprecation
-    --tls-min-v1.3
 permissions: {}
 jobs:
   # TODO: validate pnpm config by reading yaml before pnpm setup
@@ -33,8 +23,8 @@ jobs:
     runs-on: ubuntu-slim
     steps:
       - parallel:
-        - name: Configure git
-          uses: $/.github/actions/git-configure
+        - uses: $/.github/actions/node-configure
+        - uses: $/.github/actions/git-configure
         - name: Configure pnpm
           run: |
             set -Cfu

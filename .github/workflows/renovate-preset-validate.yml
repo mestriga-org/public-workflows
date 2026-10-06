@@ -5,16 +5,6 @@ on:
 defaults:
   run:
     shell: sh
-env:
-  NODE_OPTIONS: >- # for v25.8
-    --no-addons
-    --disable-proto=delete
-    --force-context-aware
-    --force-node-api-uncaught-exceptions-policy
-    --frozen-intrinsics
-    --no-global-search-paths
-    --pending-deprecation
-    --tls-min-v1.3
 permissions: {}
 jobs:
   renovate-preset-validate:
@@ -23,10 +13,9 @@ jobs:
     timeout-minutes: 1
     runs-on: ubuntu-26.04
     steps:
-      - name: Configure git
-        uses: $/.github/actions/git-configure
-      - name: Checkout
-        uses: actions/checkout@v7.0.1
+      - uses: $/.github/actions/node-configure
+      - uses: $/.github/actions/git-configure
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           set-safe-directory: false

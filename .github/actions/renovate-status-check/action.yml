@@ -10,7 +10,7 @@ runs:
           const { data } = await github.rest.repos.listCommitStatusesForRef({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: github.sha
+            ref: github.ref
           })
           console.log(data)
           console.setFailed("testing")

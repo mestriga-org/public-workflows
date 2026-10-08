@@ -8,7 +8,6 @@
 
 *.json text whitespace=tabwidth=2,indent-with-non-tab
 
-*.yaml text whitespace=tabwidth=2,tab-in-indent
 *.yml  text whitespace=tabwidth=2,tab-in-indent
 
 .github/workflows/actions.lock text whitespace=tabwidth=2,tab-in-indent eol=lf

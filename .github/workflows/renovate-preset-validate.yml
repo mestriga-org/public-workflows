@@ -21,8 +21,6 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |-
             /default.json
-            /presets/
-            !/presets/*
             /presets/*.json
             !*/
       - id: glob-presets

@@ -32,7 +32,6 @@ jobs:
             /.renovaterc.json5
             /package.json
             !*/
-      - run: find . -type f
       - name: renovate-config-validator
         uses: docker://renovate/renovate:44.138.0@sha256:32027ed5e5e450f76ee372fcd6e72c8114db7fdb28c97c520515a03ea4a0d77b
         with:

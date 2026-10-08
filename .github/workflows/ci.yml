@@ -4,30 +4,19 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: main
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ${{ github.workflow_ref }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
 defaults:
   run:
     shell: sh
-env:
-  NODE_OPTIONS: >- # for v25.8
-    --no-addons
-    --disable-proto=delete
-    --force-context-aware
-    --force-node-api-uncaught-exceptions-policy
-    --frozen-intrinsics
-    --no-global-search-paths
-    --pending-deprecation
-    --tls-min-v1.3
 permissions: {}
 jobs:
   git-check:
-    permissions:
-      contents: read
+    permissions: { contents: read }
     uses: $/.github/workflows/git-check.yml
-  ci-success:
+  merge-check:
     if: (!cancelled())
     permissions:
       statuses: read
@@ -36,10 +25,8 @@ jobs:
     needs:
       - git-check
     steps:
-      - uses: $/.github/actions/node-configure
       - parallel:
         # TODO see if should look at commit or pr for renovate checks
         - uses: $/.github/actions/renovate-status-check
-        # https://github.com/orgs/community/discussions/45058#discussioncomment-7465690
         - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
           run: exit 1

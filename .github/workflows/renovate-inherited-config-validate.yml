@@ -5,16 +5,6 @@ on:
 defaults:
   run:
     shell: sh
-env:
-  NODE_OPTIONS: >- # for v25.8
-    --no-addons
-    --disable-proto=delete
-    --force-context-aware
-    --force-node-api-uncaught-exceptions-policy
-    --frozen-intrinsics
-    --no-global-search-paths
-    --pending-deprecation
-    --tls-min-v1.3
 permissions: {}
 jobs:
   renovate-inherited-config-validate:
@@ -23,19 +13,18 @@ jobs:
     timeout-minutes: 1
     runs-on: ubuntu-26.04
     steps:
-      - uses: $/.github/actions/node-configure
       - uses: $/.github/actions/git-configure
       - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           set-safe-directory: false
           sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /org-inherited-config.json
+          sparse-checkout: |-
+            org-inherited-config.json
             !*/
       - uses: docker://renovate/renovate:44.138.0@sha256:32027ed5e5e450f76ee372fcd6e72c8114db7fdb28c97c520515a03ea4a0d77b
         with:
           entrypoint: renovate-config-validator
           args: --strict -- org-inherited-config.json
         env:
-          NODE_OPTIONS: ${{ env.NODE_OPTIONS }} --addons --no-frozen-intrinsics
+          NODE_OPTIONS: ${{ env.NODE_OPTIONS }}

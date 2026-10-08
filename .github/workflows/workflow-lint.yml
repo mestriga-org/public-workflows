@@ -4,24 +4,14 @@ name: Workflow lint
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: main
   workflow_call:
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ${{ github.workflow_ref }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
 defaults:
   run:
     shell: sh
-env:
-  NODE_OPTIONS: >- # for v25.8
-    --no-addons
-    --disable-proto=delete
-    --force-context-aware
-    --force-node-api-uncaught-exceptions-policy
-    --frozen-intrinsics
-    --no-global-search-paths
-    --pending-deprecation
-    --tls-min-v1.3
 permissions: {}
 jobs:
   workflow-lint:
@@ -30,7 +20,6 @@ jobs:
     timeout-minutes: 1
     runs-on: ubuntu-slim
     steps:
-      - uses: $/.github/actions/node-configure
       - uses: $/.github/actions/git-configure
       - uses: actions/checkout@v7.0.1
         with:

@@ -1,0 +1,14 @@
+# This workflow is managed by gh actions-lock.
+
+name: Failure
+on: workflow_call
+defaults:
+  run:
+    shell: sh
+permissions: {}
+jobs:
+  failure:
+    timeout-minutes: 1
+    runs-on: ubuntu-slim
+    steps:
+      - run: exit 1

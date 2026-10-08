@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: $/.github/actions/git-configure
-      - name: fail because checkout may be incorrect
-        run: command -p false
       - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false

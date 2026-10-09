@@ -8,13 +8,7 @@ defaults:
     shell: sh
 permissions: {}
 jobs:
-  # TODO: validate pnpm config by reading yaml before pnpm setup
-  # TODO: require all side effects to be already cached on reinstall
-  # TODO: reporter
-  # TODO: review cache key for pnpm dedupe
-  # TODO: put .pnpm-store in workspace root
-  # TODO: use fetch (see enableModulesDir/virtualStoreOnly, handle side effect caching)
-  # TODO: use @pnpm/mount-modules with fetch
+  # TODO: lockfile.includeResolutionSettings (should be required) (but i cannot require)
   # TODO: audit
   pnpm-run-lint:
     permissions:

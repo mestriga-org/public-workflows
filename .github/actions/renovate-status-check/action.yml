@@ -17,7 +17,10 @@ runs:
               repo: context.repo.repo,
               ref: context.payload.pull_request.head.sha
             })
-          ).data)
+          ).data) {
+            if (data.context == context)
+              console.log(data)
             if (data.context === context && !(success = data.status === 'success'))
                 break
+          }
           if (!success) core.setFailed('')

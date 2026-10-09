@@ -9,7 +9,7 @@ runs:
         script: |
           const ref = context.payload.pull_request.head.ref.substring('renovate/'.length)
           if (ref === 'configure') return
-          const context = `renovate/${ref === 'reconfigure' ? 'configValidation' : 'artifacts'}`
+          const name = `renovate/${ref === 'reconfigure' ? 'configValidation' : 'artifacts'}`
           let success = null
           for (const data of (
             await github.rest.repos.listCommitStatusesForRef({
@@ -18,9 +18,9 @@ runs:
               ref: context.payload.pull_request.head.sha
             })
           ).data) {
-            if (data.context == context)
+            if (data.context === name)
               console.log(data)
-            if (data.context === context && !(success = data.status === 'success'))
+            if (data.context === name && !(success = data.status === 'success'))
                 break
           }
           if (!success) core.setFailed('')

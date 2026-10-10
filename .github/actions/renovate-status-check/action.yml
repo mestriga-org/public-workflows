@@ -7,26 +7,10 @@ runs:
       uses: actions/github-script@v9.0.0
       with:
         script: |
-          const ref = context.payload.pull_request.head.ref.substring('renovate/'.length)
-          if (ref === 'configure') return
-          const name = `renovate/${ref === 'reconfigure' ? 'configValidation' : 'artifacts'}`
-          let success = null
-          for (const data of (
-            await github.rest.repos.listCommitStatusesForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: context.payload.pull_request.head.sha
-            })
-          ).data)
-            if (data.context === name)
-              console.log(data)
-          for (const data of (
-            await github.rest.repos.listCommitStatusesForRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: context.payload.pull_request.head.sha
-            })
-          ).data)
-            if (data.context === name && !(success = data.status === 'success'))
-                break
-          if (!success) core.setFailed('')
+          const ref = context.payload.pull_request.head.ref
+          const branch = ref.substring('renovate/'.length)
+          if (branch === 'configure') return
+          const name = `renovate/${branch === 'reconfigure' ? 'configValidation' : 'artifacts'}`
+          const { statuses } = octokit.rest.repos.getCombinedStatusForRef({ ..context.repo, ref })
+          let { state } = statuses.find({ context } => context == name)
+          if (state != 'success') core.setFailed('')

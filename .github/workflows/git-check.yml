@@ -68,7 +68,7 @@ jobs:
             run: |
               set -Cfu -o posix
               shopt -s lastpipe
-              exec "${GIT_EXEC_PATH:?}"/git ls-files -c --format='.%(eolinfo:index)%x09.%(eolattr)%x09%(path)' -- | {
+              exec git ls-files -c --format='.%(eolinfo:index)%x09.%(eolattr)%x09%(path)' -- | {
                   unset -v -- info attr path
                   while :; do
                       IFS=$'\t' read -r -- info attr path || case $? in (1) break;; (*) exit; esac

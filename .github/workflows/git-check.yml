@@ -1,8 +1,5 @@
 # This workflow is managed by gh actions-lock.
 
-# TODO: see if sparse checkout will compromise result
-# TODO: see if git options affect grep
-
 name: Git check
 run-name: Checkint git attributes
 on:
@@ -12,7 +9,6 @@ defaults:
     shell: sh
 permissions: {}
 jobs:
-  # TODO use tree instead of index
   git-check:
     permissions:
       contents: read
@@ -34,24 +30,25 @@ jobs:
           - name: Check whitespace attribute
             env:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
+            shell: bash
             run: |
               set -Cfu
               unset -v parent
-              parent=$(exec git hash-object -t tree -- /dev/null)
+              parent=${ command git hash-object -t tree -- /dev/null; }
               exec git -c core.whitespace=tabwidth=1,indent_with_nontab diff-index --cached --check "${parent:?}" --
           - name: Check diff attributes
-            shell: bash
             env:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
+            shell: bash
             run: |
               set -Cfu -o posix
-              command git grep --cached -qI -e $'[^\x01-\xFF]' -- || case $? in (1) exit 0;; (*) exit; esac
+              command git grep --cached -qIG -e $'[^\x01-\xFF]' -- || case $? in (1) exit 0;; (*) exit; esac
               >&2 command -p echo Null byte in text file.
               exit 1
           - name: Check excludes
-            shell: bash
             env:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
+            shell: bash
             run: |
               set -Cfu -o posix
               shopt -s lastpipe
@@ -62,9 +59,9 @@ jobs:
                   exit 1
               }
           - name: Check text attributes
-            shell: bash
             env:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
+            shell: bash
             run: |
               set -Cfu -o posix
               shopt -s lastpipe

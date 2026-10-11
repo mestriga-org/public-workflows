@@ -26,7 +26,6 @@ jobs:
       - git-check
     steps:
       - parallel:
-        # TODO see if should look at commit or pr for renovate checks
         - uses: $/.github/actions/renovate-status-check
         - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
           run: exit 1

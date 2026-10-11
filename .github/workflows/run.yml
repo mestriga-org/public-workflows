@@ -3,6 +3,12 @@ on:
     branches: main
     types: [completed,in_progress]
     workflows: ci
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_sha }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: sh
 permissions: { }
 jobs:
   set-commit-status:
@@ -14,17 +20,20 @@ jobs:
           script: |
             console.log(context.payload.workflow_run)
             const { conclusion, head_sha, name, html_url } = context.payload.workflow_run
-            let state = 'error'
-            switch (conclusion) {
-              case 'failure':
-                state = 'failure'
-                break
-              case 'skipped':
-              case 'neutral':
-              case 'success':
-                state = 'success'
-                break
-            }
+            let state = 'pending'
+            if (conclusion)
+              switch (conclusion) {
+                case 'failure':
+                  state = 'failure'
+                  break
+                case 'skipped':
+                case 'neutral':
+                case 'success':
+                  state = 'success'
+                  break
+                default:
+                  state = 'error'
+              }
             await octokit.rest.repos.createCommitStatus({
               ...context.repo,
               sha: head_sha,

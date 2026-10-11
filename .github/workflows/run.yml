@@ -3,8 +3,10 @@ on:
     branches: main
     types: completed
     workflows: ci
+permissions: { }
 jobs:
   set-commit-status:
+    permissions: { statuses: write }
     runs-on: ubuntu-slim
     steps:
       # todo set description and context

@@ -30,11 +30,11 @@ jobs:
           - name: Check whitespace attribute
             env:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
-            shell: bash
+            shell: sh
             run: |
               set -Cfu
               unset -v parent
-              parent=${ command git hash-object -t tree -- /dev/null; }
+              parent=(command git hash-object -t tree -- /dev/null)
               exec git -c core.whitespace=tabwidth=1,indent_with_nontab diff-index --cached --check "${parent:?}" --
           - name: Check diff attributes
             env:

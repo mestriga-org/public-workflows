@@ -10,7 +10,9 @@ runs:
       run: |
         set -Cfu -o posix
         shopt -s lastpipe
-        exec git sparse-checkout check-rules .github | {
+        <<'EOF' exec git sparse-checkout check-rules | {
+        .github
+        EOF
             unset -v path
             IFS= read -r path
         }

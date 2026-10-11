@@ -11,7 +11,7 @@ jobs:
       - uses: actions/github-script@v9.0.0
         with:
           script: |
-            const { conclusion, head_sha, html_url } = context.payload.workflow_run.head_sha
+            const { conclusion, head_sha, html_url } = context.payload.workflow_run
             let state = 'error'
             switch (conclusion) {
               case 'failure':

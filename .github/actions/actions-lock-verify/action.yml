@@ -1,0 +1,26 @@
+name: Verify actions lock
+description: Verify GitHub action pins
+runs:
+  using: composite
+  steps:
+    - name: Validate checkout
+      env:
+        GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
+      shell: bash
+      run: |
+        set -Cfu -o posix
+        shopt -s lastpipe
+        exec git sparse-checkout check-rules .github | {
+            unset -v path
+            IFS= read -r path
+        }
+    - name: Install
+      env:
+        GH_TOKEN: ${{ github.token }}
+      shell: sh
+      run: exec gh extension install github/gh-actions-lock
+    - name: Run
+      env:
+        GH_TOKEN: ${{ github.token }}
+      shell: sh
+      run: exec gh actions-lock --verify

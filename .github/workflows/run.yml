@@ -1,0 +1,48 @@
+on:
+  workflow_run:
+    branches: main
+    types: completed
+    workflows: ci
+jobs:
+  set-commit-status:
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/github-script@v9.0.0
+        with:
+          # target_url, description, context
+          script: |
+            const { conclusion, head_sha, html_url } = context.payload.workflow_run.head_sha
+            let state = 'error'
+            switch (conclusion) {
+              case 'failure':
+                state = 'failure'
+                break;
+              case 'skipped':
+              case 'neutral':
+              case 'success'
+                state = 'success'
+                break
+              default:
+                state = 'error'
+            }
+            octokit.rest.repos.createCommitStatus({
+              ..context.repo,
+              sha: head_sha,
+              state,
+              context: my-test
+              target_url: html_url
+            })
+
+
+
+
+# curl --request POST \
+# --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.event.workflow_run.head_commit.id }} \
+# --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+# --header 'content-type: application/json' \
+# --data '{
+#   "state": "${{ github.event.workflow_run.conclusion == 'success' && 'success' || 'failure' }}",
+#   "context": "workflow_run/my-job",
+#   "target_url": "${{ github.event.workflow_run.html_url }}"
+# }' \
+#--fail

@@ -3,8 +3,7 @@ description: Checks renovate commit statuses
 runs:
   using: composite
   steps:
-    - if: startsWith(github.head_ref, 'renovate/')
-      uses: actions/github-script@v9.0.0
+    - uses: actions/github-script@v9.0.0
       with:
         script: |
           const ref = context.payload.pull_request.head.ref

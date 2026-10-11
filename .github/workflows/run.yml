@@ -1,7 +1,7 @@
 on:
   workflow_run:
     branches: main
-    types: completed
+    types: [completed,in_progress]
     workflows: ci
 permissions: { }
 jobs:
@@ -9,10 +9,10 @@ jobs:
     permissions: { statuses: write }
     runs-on: ubuntu-slim
     steps:
-      # todo set description and context
       - uses: actions/github-script@v9.0.0
         with:
           script: |
+            console.log(context.payload.workflow_run)
             const { conclusion, head_sha, name, html_url } = context.payload.workflow_run
             let state = 'error'
             switch (conclusion) {
@@ -24,8 +24,6 @@ jobs:
               case 'success':
                 state = 'success'
                 break
-              default:
-                state = 'error'
             }
             await octokit.rest.repos.createCommitStatus({
               ...context.repo,

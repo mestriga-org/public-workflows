@@ -3,9 +3,8 @@
 # TODD verify cooldown period (need to create action-lock config.yaml)
 name: Workflow lint
 on:
-  pull_request:
-  push:
-    branches: main
+  pull_request: { branches: main }
+  push: { branches: main }
   workflow_call:
 concurrency:
   group: ${{ github.workflow_ref }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.sha }}
@@ -16,17 +15,20 @@ defaults:
 permissions: {}
 jobs:
   workflow-lint:
-    permissions:
-      contents: read
+    permissions: { contents: read }
     timeout-minutes: 1
     runs-on: ubuntu-slim
     steps:
-      - uses: $/.github/actions/git-configure
-      - uses: actions/checkout@v7.0.1
+      - name: Configure git
+        uses: $/.github/actions/git-configure
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           set-safe-directory: false
           sparse-checkout: .github
       - parallel:
-        - uses: $/.github/actions/actions-lock-verify
-        - uses: $/.github/actions/actionlint
+        - name: Verify actions lock
+          uses: $/.github/actions/actions-lock-verify
+        - name: Actionlint
+          uses: $/.github/actions/actionlint

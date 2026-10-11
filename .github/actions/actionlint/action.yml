@@ -1,5 +1,5 @@
-name: Verify actions lock
-description: Verify GitHub action pins
+name: Actionlint
+description: Check workflows with actionlint
 runs:
   using: composite
   steps:

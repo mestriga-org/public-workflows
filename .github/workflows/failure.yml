@@ -11,4 +11,5 @@ jobs:
     timeout-minutes: 1
     runs-on: ubuntu-slim
     steps:
-      - run: exit 1
+      - name: Fail
+        run: exit 1

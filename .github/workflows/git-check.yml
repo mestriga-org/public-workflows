@@ -3,6 +3,8 @@
 name: Git check
 run-name: Checkint git attributes
 on:
+  pull_request: { branches: main }
+  push: { branches: main }
   workflow_call:
 defaults:
   run:
@@ -10,12 +12,12 @@ defaults:
 permissions: {}
 jobs:
   git-check:
-    permissions:
-      contents: read
+    permissions: { contents: read }
     timeout-minutes: 1
     runs-on: ubuntu-slim
     steps:
-      - uses: $/.github/actions/git-configure
+      - name: Configure git
+        uses: $/.github/actions/git-configure
       - name: Checkout
         uses: actions/checkout@v7.0.1
         with:
@@ -23,11 +25,11 @@ jobs:
           set-safe-directory: false
           sparse-checkout: '!/'
           sparse-checkout-cone-mode: false
-          # replaces the default 'blob:none' none with the GitHub size limit:
           # https://docs.github.com/repositories/working-with-files/managing-large-files/about-large-files-on-github#file-size-limits
           filter: blob:limit=100m
       - parallel:
           - name: Check whitespace attribute
+            # can diff tree setting attr-source
             env:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
             shell: sh
@@ -37,6 +39,7 @@ jobs:
               parent=$(command git hash-object -t tree -- /dev/null)
               exec git -c core.whitespace=tabwidth=1,indent_with_nontab diff-index --cached --check "${parent:?}" --
           - name: Check diff attributes
+            # can grep a tree and set attr-source
             env:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
             shell: bash
@@ -46,6 +49,8 @@ jobs:
               >&2 command -p echo Null byte in text file.
               exit 1
           - name: Check excludes
+            # exclude-standard is not available in ls-tree
+            # ignore patterns are never retrieved from trees
             env:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
             shell: bash
@@ -59,6 +64,7 @@ jobs:
                   exit 1
               }
           - name: Check text attributes
+            # eolinfo is not available in ls-tree
             env:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
             shell: bash

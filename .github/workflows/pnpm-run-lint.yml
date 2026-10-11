@@ -27,7 +27,8 @@ jobs:
         --tls-min-v1.3
     steps:
       - parallel:
-        - uses: $/.github/actions/git-configure
+        - name: Configure git
+          uses: $/.github/actions/git-configure
         - name: Configure pnpm
           run: |
             set -Cfu

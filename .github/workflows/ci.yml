@@ -2,9 +2,8 @@
 
 name: CI
 on:
-  pull_request:
-  push:
-    branches: main
+  pull_request: { branches: main }
+  push: { branches: main }
 concurrency:
   group: ${{ github.workflow_ref }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
@@ -13,19 +12,15 @@ defaults:
     shell: sh
 permissions: {}
 jobs:
-  git-check:
+  pnpm-run-lint:
     permissions: { contents: read }
-    uses: $/.github/workflows/git-check.yml
-  merge-check:
+    uses: $/.github/workflows/pnpm-run-lint.yml
+  ci-success:
     if: (!cancelled())
-    permissions:
-      statuses: read
     runs-on: ubuntu-slim
     timeout-minutes: 1
     needs:
-      - git-check
+      - pnpm-run-lint
     steps:
-      - parallel:
-        - uses: $/.github/actions/renovate-status-check
-        - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
-          run: exit 1
+      - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1

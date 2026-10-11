@@ -16,10 +16,10 @@ jobs:
             switch (conclusion) {
               case 'failure':
                 state = 'failure'
-                break;
+                break
               case 'skipped':
               case 'neutral':
-              case 'success'
+              case 'success':
                 state = 'success'
                 break
               default:

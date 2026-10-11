@@ -1,0 +1,12 @@
+on:
+  check_suite:
+    types: completed
+jobs:
+  test:
+    runs-on: ubuntu-slim
+    steps:
+      # todo set description and context
+      - uses: actions/github-script@v9.0.0
+        with:
+          script: |
+            console.log(context.payload)

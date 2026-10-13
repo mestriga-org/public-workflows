@@ -1,14 +1,1 @@
-name: Renovate status check
-on: workflow_call
-defaults:
-  run:
-    shell: sh
-permissions: {}
-jobs:
-  renovate-status-check:
-    if: startsWith(github.head_ref, 'renovate/')
-    permissions: { statuses: read }
-    runs-on: ubuntu-slim
-    timeout-minutes: 1
-    steps:
-      - uses: $/.github/actions/renovate-status-check
+# This workflow is managed by gh actions-lock.name: Renovate status checkon: workflow_calldefaults:  run:    shell: shpermissions: {}jobs:  renovate-status-check:    if: startsWith(github.head_ref, 'renovate/')    permissions: { statuses: read }    runs-on: ubuntu-slim    timeout-minutes: 1    steps:      - uses: $/.github/actions/renovate-status-check

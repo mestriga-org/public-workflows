@@ -1,7 +1,3 @@
-# This workflow is managed by gh actions-lock.
-
-# need to be the pr merge commit?
-
 name: CI
 on:
   pull_request: { branches: main }

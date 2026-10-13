@@ -1,5 +1,3 @@
-# This workflow is managed by gh actions-lock.
-
 on: workflow_call
 defaults:
   run:
@@ -7,14 +5,14 @@ defaults:
 permissions: {}
 jobs:
   renovate-inherited-config-validate:
-    permissions:
-      contents: read
+    permissions: { contents: read }
     timeout-minutes: 1
     runs-on: ubuntu-26.04
     steps:
       - name: Configure git
         uses: $/.github/actions/git-configure
-      - uses: actions/checkout@v7.0.1
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           set-safe-directory: false

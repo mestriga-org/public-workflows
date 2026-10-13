@@ -1,5 +1,3 @@
-# This workflow is managed by gh actions-lock.
-
 name: Pnpm lint
 on: workflow_call
 defaults:
@@ -10,8 +8,7 @@ jobs:
   # TODO: lockfile.includeResolutionSettings (should be required) (but i cannot require)
   # TODO: audit
   pnpm-run-lint:
-    permissions:
-      contents: read
+    permissions: { contents: read }
     timeout-minutes: 3
     runs-on: ubuntu-slim
     env:
@@ -51,7 +48,7 @@ jobs:
             pmOnFail: error
             trustPolicy: no-downgrade
             verifyDepsBeforeRun: error'
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false

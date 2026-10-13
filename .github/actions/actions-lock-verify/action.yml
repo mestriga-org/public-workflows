@@ -20,7 +20,7 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
       shell: sh
-      run: exec gh extension install github/gh-actions-lock
+      run: exec gh extension install github/gh-actions-lock --pin v0.1.6
     - name: Run
       env:
         GH_TOKEN: ${{ github.token }}

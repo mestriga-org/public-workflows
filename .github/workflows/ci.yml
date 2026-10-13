@@ -2,7 +2,7 @@
 
 # need to be the pr merge commit?
 
-name: CI2
+name: CI
 on:
   pull_request: { branches: main }
   push: { branches: main }

@@ -11,5 +11,6 @@ runs:
           if (branch === 'configure') return
           const name = `renovate/${branch === 'reconfigure' ? 'configValidation' : 'artifacts'}`
           const { statuses } = await octokit.rest.repos.getCombinedStatusForRef({ ...context.repo, ref })
+          console.log(statuses)
           let { state } = statuses.find(({ context }) => context == name)
           if (state != 'success') core.setFailed('')

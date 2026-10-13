@@ -21,7 +21,7 @@ jobs:
     permissions: { contents: read }
     uses: $/.github/workflows/workflow-lint.yml
   renovate-status-check:
-    permissions: { contents: read }
+    permissions: { statuses: read }
     uses: $/.github/workflows/renovate-status-check.yml
   pnpm-run-lint:
     permissions: { contents: read }

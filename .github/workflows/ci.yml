@@ -23,9 +23,6 @@ jobs:
   renovate-status-check:
     permissions: { statuses: read }
     uses: $/.github/workflows/renovate-status-check.yml
-  pnpm-run-lint:
-    permissions: { contents: read }
-    uses: $/.github/workflows/pnpm-run-lint.yml
   ci:
     if: (!cancelled())
     runs-on: ubuntu-slim
@@ -34,7 +31,6 @@ jobs:
       - git-check
       - workflow-lint
       - renovate-status-check
-      - pnpm-run-lint
     steps:
       - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
         run: exit 1

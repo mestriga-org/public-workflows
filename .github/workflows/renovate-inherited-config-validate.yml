@@ -1,1 +1,28 @@
-# This workflow is managed by gh actions-lock.on: workflow_calldefaults:  run:    shell: shpermissions: {}jobs:  renovate-inherited-config-validate:    permissions: { contents: read }    timeout-minutes: 1    runs-on: ubuntu-26.04    steps:      - name: Configure git        uses: $/.github/actions/git-configure      - name: Checkout repository        uses: actions/checkout@v7.0.1        with:          persist-credentials: false          set-safe-directory: false          sparse-checkout-cone-mode: false          sparse-checkout: |-            /org-inherited-config.json            !*/      - uses: docker://renovate/renovate:44.149.2@sha256:4a93eba384999995555d48ff194d5013230fe44142260292cdaf9e7bd45ed949        with:          entrypoint: renovate-config-validator          args: --strict -- org-inherited-config.json        env:          NODE_OPTIONS: ${{ env.NODE_OPTIONS }}
+on: workflow_call
+defaults:
+  run:
+    shell: sh
+permissions: {}
+jobs:
+  renovate-inherited-config-validate:
+    permissions: { contents: read }
+    timeout-minutes: 1
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Configure git
+        uses: $/.github/actions/git-configure
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          set-safe-directory: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |-
+            /org-inherited-config.json
+            !*/
+      - uses: docker://renovate/renovate:44.149.2@sha256:4a93eba384999995555d48ff194d5013230fe44142260292cdaf9e7bd45ed949
+        with:
+          entrypoint: renovate-config-validator
+          args: --strict -- org-inherited-config.json
+        env:
+          NODE_OPTIONS: ${{ env.NODE_OPTIONS }}

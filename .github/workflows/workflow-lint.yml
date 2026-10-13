@@ -1,1 +1,25 @@
-# This workflow is managed by gh actions-lock.name: Workflow linton: workflow_calldefaults:  run:    shell: shpermissions: {}jobs:  workflow-lint:    permissions: { contents: read }    timeout-minutes: 1    runs-on: ubuntu-slim    steps:      - name: Configure git        uses: $/.github/actions/git-configure      - name: Checkout repository        uses: actions/checkout@v7.0.1        with:          persist-credentials: false          set-safe-directory: false          sparse-checkout: .github      - parallel:        - name: Verify actions lock          uses: $/.github/actions/actions-lock-verify        - name: Actionlint          uses: $/.github/actions/actionlint
+name: Workflow lint
+on: workflow_call
+defaults:
+  run:
+    shell: sh
+permissions: {}
+jobs:
+  workflow-lint:
+    permissions: { contents: read }
+    timeout-minutes: 1
+    runs-on: ubuntu-slim
+    steps:
+      - name: Configure git
+        uses: $/.github/actions/git-configure
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          set-safe-directory: false
+          sparse-checkout: .github
+      - parallel:
+        - name: Verify actions lock
+          uses: $/.github/actions/actions-lock-verify
+        - name: Actionlint
+          uses: $/.github/actions/actionlint

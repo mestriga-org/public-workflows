@@ -1,1 +1,51 @@
-# This workflow is managed by gh actions-lock.on: workflow_calldefaults:  run:    shell: shpermissions: {}jobs:  renovate-preset-validate:    permissions: { contents: read }    timeout-minutes: 1    runs-on: ubuntu-26.04    steps:      - name: Configure git        uses: $/.github/actions/git-configure      - name: Checkout repository        uses: actions/checkout@v7.0.1        with:          persist-credentials: false          set-safe-directory: false          sparse-checkout-cone-mode: false          sparse-checkout: |-            /default.json            /presets/*.json            !*/      - id: glob-presets        # TODO handle files names containing double quotes and (possibly) escape chars        run: |          set -Cfu          # shellcheck disable=SC2120          seterr() { return "$@"; }          {            command -p printf result=            set +f; set -f -- presets/*.json            case $# in (1)              case $1 in (presets/\*.json)                command -p test -f presets/\*.json ||                  case $? in (1) set --;; (*) seterr; esac              esac            esac            case $# in (0) ;; (*)              case $* in (*'          '*) seterr 1; esac              command -p printf ' "%s"' "$@"            esac            command -p echo          }>>"$GITHUB_OUTPUT"      - uses: docker://renovate/renovate:44.149.2@sha256:4a93eba384999995555d48ff194d5013230fe44142260292cdaf9e7bd45ed949        with:          entrypoint: renovate-config-validator          args: --strict --no-global -- default.json${{ steps.glob-presets.outputs.result }}        env:          NODE_OPTIONS: ${{ env.NODE_OPTIONS }} --addons --no-frozen-intrinsics
+on: workflow_call
+defaults:
+  run:
+    shell: sh
+permissions: {}
+jobs:
+  renovate-preset-validate:
+    permissions: { contents: read }
+    timeout-minutes: 1
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Configure git
+        uses: $/.github/actions/git-configure
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          set-safe-directory: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |-
+            /default.json
+            /presets/*.json
+            !*/
+      - id: glob-presets
+        # TODO handle files names containing double quotes and (possibly) escape chars
+        run: |
+          set -Cfu
+          # shellcheck disable=SC2120
+          seterr() { return "$@"; }
+          {
+            command -p printf result=
+            set +f; set -f -- presets/*.json
+            case $# in (1)
+              case $1 in (presets/\*.json)
+                command -p test -f presets/\*.json ||
+                  case $? in (1) set --;; (*) seterr; esac
+              esac
+            esac
+            case $# in (0) ;; (*)
+              case $* in (*'
+          '*) seterr 1; esac
+              command -p printf ' "%s"' "$@"
+            esac
+            command -p echo
+          }>>"$GITHUB_OUTPUT"
+      - uses: docker://renovate/renovate:44.149.2@sha256:4a93eba384999995555d48ff194d5013230fe44142260292cdaf9e7bd45ed949
+        with:
+          entrypoint: renovate-config-validator
+          args: --strict --no-global -- default.json${{ steps.glob-presets.outputs.result }}
+        env:
+          NODE_OPTIONS: ${{ env.NODE_OPTIONS }} --addons --no-frozen-intrinsics

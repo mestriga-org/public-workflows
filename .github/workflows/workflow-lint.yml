@@ -2,13 +2,7 @@
 
 # TODD verify cooldown period (need to create action-lock config.yaml)
 name: Workflow lint
-on:
-  pull_request: { branches: main }
-  push: { branches: main }
-  workflow_call:
-concurrency:
-  group: ${{ github.workflow_ref }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: true
+on: workflow_call
 defaults:
   run:
     shell: sh

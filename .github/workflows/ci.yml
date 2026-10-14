@@ -12,12 +12,12 @@ defaults:
     shell: sh
 permissions: {}
 jobs:
-  renovate-status-check:
-    permissions: { statuses: read }
-    uses: $/.github/workflows/renovate-status-check.yml
   git-check:
     permissions: { contents: read }
     uses: $/.github/workflows/git-check.yml
+  renovate-status-check:
+    permissions: { statuses: read }
+    uses: $/.github/workflows/renovate-status-check.yml
   workflow-lint:
     permissions: { contents: read }
     uses: $/.github/workflows/workflow-lint.yml
@@ -27,8 +27,8 @@ jobs:
     timeout-minutes: 1
     needs:
       - git-check
-      - workflow-lint
       - renovate-status-check
+      - workflow-lint
     steps:
       - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
         run: exit 1

@@ -74,7 +74,7 @@ jobs:
             "hoist",
             "lockfile",
             "minimumReleaseAgeExcludePrune",
-            "nodeExperimentalPackageMap ",
+            "nodeExperimentalPackageMap",
             "nodeOptions",
             "resolutionMode",
             "strictPeerDependencies",

@@ -6,7 +6,7 @@ on: workflow_call
 defaults:
   run:
     shell: sh
-permissions: {}
+permissions: { }
 jobs:
   # TODO: lockfile.includeResolutionSettings (should be required) (but i cannot require)
   # TODO: audit

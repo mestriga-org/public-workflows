@@ -89,7 +89,7 @@ jobs:
           node-version-file: .node-version
         env:
           NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
-          PNPM_CONFIG_PM_ON_FAIL: download # https://github.com/pnpm/setup/issues/57
+          # PNPM_CONFIG_PM_ON_FAIL: download # https://github.com/pnpm/setup/issues/57
       - name: Pnpm config path
         run: |
           set -Cfu
@@ -97,6 +97,3 @@ jobs:
           command -p test ~/.config/pnpm/config.yaml -ef "$config"
       - name: Pnpm run lint
         run: exec pnpm pm --dir . --include-workspace-root --fail-if-no-match -r run -- lint
-        # env:
-          # fixes [WARN] Your node_modules are out of sync with your lockfile. The value of the autoDedupe setting has changed
-          # PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: warn

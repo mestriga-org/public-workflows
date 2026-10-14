@@ -87,8 +87,8 @@ jobs:
         with:
           require-lockfile: true
           node-version-file: .node-version
-        # env:
-          # NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
+        env:
+          NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
       - name: Pnpm config path
         run: |
           set -Cfu

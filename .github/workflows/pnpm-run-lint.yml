@@ -49,7 +49,6 @@ jobs:
             nodeOptions: ${NODE_OPTIONS}
             packageImportMethod: hardlink
             pmOnFail: error
-            runtimeOnFail: error
             trustPolicy: no-downgrade
             verifyDepsBeforeRun: error'
       - name: Checkout repository

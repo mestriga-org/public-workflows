@@ -33,8 +33,8 @@ jobs:
             set -Cfu
             # makes git dependency installation fail:
             >>"${GITHUB_ENV:?}" command -p printf \
-            'NPM_CONFIG_WORKSPACE_DIR=%s
-            ' "${GITHUB_WORKSPACE:?}"
+            'PNPM_CONFIG_WORKSPACE_DIR=%s
+            ' "${PWD:?}"
             CDPATH='' cd -- ~/.config/
             command -p mkdir -p pnpm
             # shellcheck disable=SC2016

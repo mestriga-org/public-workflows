@@ -87,9 +87,8 @@ jobs:
         with:
           require-lockfile: true
           node-version-file: .node-version
-        env:
-          NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
-          # PNPM_CONFIG_PM_ON_FAIL: download # https://github.com/pnpm/setup/issues/57
+        # env:
+          # NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
       - name: Pnpm config path
         run: |
           set -Cfu

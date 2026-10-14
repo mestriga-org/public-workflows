@@ -1,5 +1,6 @@
 # This workflow is managed by gh actions-lock.
 
+# For pnpm v12.10
 name: Pnpm lint
 on: workflow_call
 defaults:
@@ -71,6 +72,7 @@ jobs:
             "disallowWorkspaceCycles",
             "enablePrePostScripts",
             "hoist",
+            "lockfile",
             "minimumReleaseAgeExcludePrune",
             "nodeOptions",
             "resolutionMode",
@@ -95,6 +97,6 @@ jobs:
           command -p test ~/.config/pnpm/config.yaml -ef "$config"
       - name: Pnpm run lint
         run: exec pnpm pm --dir . --include-workspace-root --fail-if-no-match -r run -- lint
-        env:
+        # env:
           # fixes [WARN] Your node_modules are out of sync with your lockfile. The value of the autoDedupe setting has changed
-          PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: warn
+          # PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: warn

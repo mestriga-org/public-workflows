@@ -87,7 +87,6 @@ jobs:
         uses: pnpm/setup@v3.1.1
         with:
           require-lockfile: true
-          node-version-file: .node-version
         env:
           NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
       - name: Pnpm config path

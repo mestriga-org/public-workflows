@@ -14,8 +14,7 @@ jobs:
     steps:
       - name: Configure git
         uses: $/.github/actions/git-configure
-      - name: Checkout repository
-        uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           set-safe-directory: false

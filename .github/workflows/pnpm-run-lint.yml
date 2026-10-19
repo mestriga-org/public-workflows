@@ -1,5 +1,3 @@
-# This workflow is managed by gh actions-lock.
-
 # For pnpm v12.10
 name: Pnpm lint
 on: workflow_call

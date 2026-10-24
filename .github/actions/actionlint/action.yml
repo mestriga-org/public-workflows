@@ -37,7 +37,7 @@ runs:
       run: |
         set -Cfu --
         unset -v config_file
-        config_file=.github/actionlint.yaml
+        config_file=.github/actionlint.yml
         command -p [ -e "${config_file:?}" ] || {
             config_file=
             trap 'case $config_file in ("") ;; (*) command -p rm -- "${config_file:?}"; esac' EXIT

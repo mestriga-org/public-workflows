@@ -21,34 +21,26 @@ jobs:
             /default.json
             /presets/*.json
             !*/
-      - name: Glob preses
-        uses: actions/github-script@v8
+      - name: Glob presets
+        id: glob-presets
+        uses: actions/github-script@v9.0.0
         with:
           script: |
-            return await glob.create('*.bicepparam').glob()
-
-
-
-      - id: glob-presets
-        # TODO handle files names containing double quotes and (possibly) escape chars
-        run: |
-          set -Cfu -- presets/*.json
-          {
-            command -p printf result=
-            while :; do
-              case $# in (0) break; esac
-              command -p [ -f "${1:?}" ] || case $? in (1) continue ;; (*) exit; esac
-              case ${1:?} in (*'"'*) command -p false; esac
-              case ${1:?} in (*'
-          '*) command -p false; esac
-              command -p printf ' "%s"' "${1:?}"
-              shift
-            done
-            command -p echo
-          }>>"$GITHUB_OUTPUT"
+            (
+              await (
+                await glob.create('*.bicepparam', {
+                  followSymbolicLinks: false
+                  implicitDescendants: false
+                  matchDirectories: false
+                })
+              ).glob()
+            ).map((file) => {
+              if (file.IndexOf('"') !== -1) core.setFailed('Double quotes')
+              return `"${file}"`
+            }).join(' ')
       - uses: docker://renovate/renovate:44.173.0@sha256:7605cf8002e4b48c282279f466b682a37c94070be4f138b81e1c879baa7c9915
         with:
           entrypoint: renovate-config-validator
-          args: --strict --no-global -- default.json${{ steps.glob-presets.outputs.result }}
+          args: --strict --no-global -- default.json ${{ steps.glob-presets.outputs.result }}
         env:
           NODE_OPTIONS: ${{ env.NODE_OPTIONS }} --addons --no-frozen-intrinsics

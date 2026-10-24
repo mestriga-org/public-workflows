@@ -20,9 +20,8 @@ jobs:
           sparse-checkout: |-
             /org-inherited-config.json
             !*/
-      - uses: docker://renovate/renovate:44.174.0@sha256:1d257740562b9533894202caecb07fa3709bc818d33068185c5a58e5126b26c3
+      - name: Validate org-inherited-config.json
+        uses: docker://renovate/renovate:44.174.0@sha256:1d257740562b9533894202caecb07fa3709bc818d33068185c5a58e5126b26c3
         with:
           entrypoint: renovate-config-validator
           args: --strict -- org-inherited-config.json
-        env:
-          NODE_OPTIONS: ${{ env.NODE_OPTIONS }}

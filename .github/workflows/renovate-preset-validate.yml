@@ -36,12 +36,12 @@ jobs:
                 })
               ).glob()
             ).map(file => {
-              if (file.indexOf("'") !== -1) core.setFailed('Double quotes')
-              return `'${file}'`
+              if (file.indexOf('"')) !== -1) core.setFailed('Double quotes')
+              return `"${file}"`
             }).join(' ')
-      - uses: docker://renovate/renovate:44.174.0@sha256:1d257740562b9533894202caecb07fa3709bc818d33068185c5a58e5126b26c3
+      - name: Validate Renovate presets
+        uses: docker://renovate/renovate:44.174.0@sha256:1d257740562b9533894202caecb07fa3709bc818d33068185c5a58e5126b26c3
         with:
           entrypoint: renovate-config-validator
+          # cannot be single quoted
           args: --strict --no-global -- default.json ${{ steps.glob-presets.outputs.result }}
-        env:
-          NODE_OPTIONS: ${{ env.NODE_OPTIONS }} --addons --no-frozen-intrinsics

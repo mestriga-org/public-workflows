@@ -37,17 +37,22 @@ runs:
       run: |
         set -Cfu --
         unset -v config_file
-        config_file=.github/actionlint.yml
+        config_file=.github/actionlint.yaml
         command -p [ -e "${config_file:?}" ] || {
-            config_file=
-            trap 'case $config_file in ("") ;; (*) command -p rm -- "${config_file:?}"; esac' EXIT
-            config_file=$(exec mktemp)
-            >>"${config_file:?}" command -p printf %s "\
+            case $? in (1) ;; (*) exit; esac
+            config_file=.github/actionlint.yml
+            command -p [ -e "${config_file:?}" ] || {
+              case $? in (1) ;; (*) exit; esac
+              config_file=
+              trap 'case $config_file in ("") ;; (*) command -p rm -- "${config_file:?}"; esac' EXIT
+              config_file=$(exec mktemp)
+              >>"${config_file:?}" command -p printf %s "\
         # yaml-language-server: \$schema=https://raw.githubusercontent.com/kjanat/actionlint/refs/tags/v1.17.0/actionlint.schema.json
         # https://github.com/kjanat/actionlint/blob/v1.17.0/docs/config.md
         policy:
             disallow-suppressions: true
             require-job-timeout: true
         "
+          }
         }
         command actionlint -color -config-file "${config_file:?}"

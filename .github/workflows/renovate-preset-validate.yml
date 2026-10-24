@@ -25,6 +25,7 @@ jobs:
         id: glob-presets
         uses: actions/github-script@v9.0.0
         with:
+          result-encoding: string
           script: |
             return (
               await (

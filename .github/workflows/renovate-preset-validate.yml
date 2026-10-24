@@ -28,7 +28,7 @@ jobs:
           script: |
             (
               await (
-                await glob.create('*.bicepparam', {
+                await glob.create('presets/*.json', {
                   followSymbolicLinks: false,
                   implicitDescendants: false,
                   matchDirectories: false,

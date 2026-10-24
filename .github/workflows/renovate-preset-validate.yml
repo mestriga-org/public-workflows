@@ -36,7 +36,7 @@ jobs:
                 })
               ).glob()
             ).map(file => {
-              if (file.indexOf('"')) !== -1) core.setFailed('Double quotes')
+              if (file.indexOf('"') !== -1) core.setFailed('Double quotes')
               return `"${file}"`
             }).join(' ')
       - name: Validate Renovate presets

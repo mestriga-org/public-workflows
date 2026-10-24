@@ -34,8 +34,8 @@ jobs:
                   matchDirectories: false,
                 })
               ).glob()
-            ).map((file) => {
-              if (file.IndexOf('"') !== -1) core.setFailed('Double quotes')
+            ).map(file => {
+              if (file.indexOf('"') !== -1) core.setFailed('Double quotes')
               return `"${file}"`
             }).join(' ')
       - uses: docker://renovate/renovate:44.173.1@sha256:047258466c0bbc5c6e8adfc1ae25bdcef5f8781ba90f7e12904af6656e35e59f

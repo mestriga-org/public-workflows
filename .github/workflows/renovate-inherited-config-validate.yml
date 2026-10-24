@@ -21,7 +21,7 @@ jobs:
             /org-inherited-config.json
             !*/
       - name: Validate org-inherited-config.json
-        uses: docker://renovate/renovate:44.175.5@sha256:8af47680e016b008c6d259ac633386eeef73ef4a6694c692f3b5f15d98523214
+        uses: docker://renovate/renovate:44.176.1@sha256:6f0874737030f9443f2a181c64c66f534af270da9e6f9380d755389f165ac188
         with:
           entrypoint: renovate-config-validator
           args: --strict -- org-inherited-config.json

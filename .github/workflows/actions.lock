@@ -16,6 +16,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
     '.github/workflows/renovate-preset-validate.yml':
         - 'actions/checkout@v7.0.1'
+        - 'actions/github-script@v8'
     '.github/workflows/renovate-status-check.yml':
         - 'actions/github-script@v9.0.0'
     '.github/workflows/workflow-lint.yml':
@@ -26,6 +27,11 @@ dependencies:
         commit: 'sha1-3d3c42e5aac5ba805825da76410c181273ba90b1'
         owner_id: 44036562
         repo_id: 197814629
+    'actions/github-script@v8':
+        ref: 'v8'
+        commit: 'sha1-ed597411d8f924073f98dfc5c65a23a2325f34cd'
+        owner_id: 44036562
+        repo_id: 205262760
     'actions/github-script@v9.0.0':
         ref: 'v9.0.0'
         commit: 'sha1-3a2844b7e9c422d3c10d287c895573f7108da1b3'

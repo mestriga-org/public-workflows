@@ -21,6 +21,14 @@ jobs:
             /default.json
             /presets/*.json
             !*/
+      - name: Glob preses
+        uses: actions/github-script@v7
+        with:
+          script: |
+            return await glob.create('*.bicepparam').glob()
+
+
+
       - id: glob-presets
         # TODO handle files names containing double quotes and (possibly) escape chars
         run: |

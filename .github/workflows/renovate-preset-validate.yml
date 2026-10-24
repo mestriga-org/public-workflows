@@ -29,9 +29,9 @@ jobs:
             (
               await (
                 await glob.create('*.bicepparam', {
-                  followSymbolicLinks: false
-                  implicitDescendants: false
-                  matchDirectories: false
+                  followSymbolicLinks: false,
+                  implicitDescendants: false,
+                  matchDirectories: false,
                 })
               ).glob()
             ).map((file) => {

@@ -16,7 +16,6 @@ workflows:
         - 'actions/checkout@v7.0.1'
     '.github/workflows/renovate-preset-validate.yml':
         - 'actions/checkout@v7.0.1'
-        - 'actions/github-script@v9.0.0'
     '.github/workflows/renovate-status-check.yml':
         - 'actions/github-script@v9.0.0'
     '.github/workflows/workflow-lint.yml':

@@ -21,27 +21,25 @@ jobs:
             /default.json
             /presets/*.json
             !*/
-      - name: Glob presets
-        id: glob-presets
-        uses: actions/github-script@v9.0.0
-        with:
-          result-encoding: string
-          script: |
-            return (
-              await (
-                await glob.create('presets/*.json', {
-                  followSymbolicLinks: false,
-                  implicitDescendants: false,
-                  matchDirectories: false,
-                })
-              ).glob()
-            ).map(file => {
-              if (file.indexOf('"') !== -1) core.setFailed('Double quotes')
-              return `${file}`
-            }).join(' ')
+      - name: List presets
+        id: list-presets
+        shell: bash
+        run: |
+          set -Cfu -o posix -- presets/*.json
+          {
+            command -p printf result=
+            while :; do
+              case $# in (0) break; esac
+              command -p [ -f "${1:?}" ] || case $? in (1) continue ;; (*) exit; esac
+              case ${1:?} in (*[\"$'\n']*) command -p false; esac
+              command -p printf ' "%s"' "${1:?}"
+              shift
+            done
+            command -p echo
+          }>>"$GITHUB_OUTPUT"
       - name: Validate Renovate presets
         uses: docker://renovate/renovate:44.174.0@sha256:1d257740562b9533894202caecb07fa3709bc818d33068185c5a58e5126b26c3
         with:
           entrypoint: renovate-config-validator
           # cannot be single quoted
-          args: --strict --no-global -- default.json ${{ steps.glob-presets.outputs.result }}
+          args: --strict --no-global -- default.json${{ steps.list-presets.outputs.result }}

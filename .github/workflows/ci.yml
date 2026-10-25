@@ -5,10 +5,8 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
-defaults:
-  run:
-    shell: sh
-permissions: {}
+defaults: { run: { shell: sh } }
+permissions: { }
 jobs:
   git-check:
     permissions: { contents: read }

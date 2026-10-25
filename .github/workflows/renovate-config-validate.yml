@@ -1,9 +1,7 @@
 name: Renovate config validation
 on: workflow_call
-defaults:
-  run:
-    shell: sh
-permissions: {}
+defaults: { run: { shell: sh } }
+permissions: { }
 jobs:
   renovate-config-validate:
     permissions: { contents: read }

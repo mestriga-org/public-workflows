@@ -1,9 +1,7 @@
 # For pnpm v12.10
 name: Pnpm lint
 on: workflow_call
-defaults:
-  run:
-    shell: sh
+defaults: { run: { shell: sh } }
 permissions: { }
 jobs:
   # TODO: lockfile.includeResolutionSettings (should be required) (but i cannot require)
@@ -27,9 +25,7 @@ jobs:
         - name: Configure git
           uses: $/.github/actions/git-configure
         - name: Configure pnpm
-          run: |
-            set -Cfu
-            # makes git dependency installation fail:
+          run: |-
             >>"${GITHUB_ENV:?}" command -p printf \
             'PNPM_CONFIG_WORKSPACE_DIR=%s
             ' "${PWD:?}"
@@ -55,8 +51,7 @@ jobs:
           persist-credentials: false
           set-safe-directory: false
       - name: Validate pnpm-workspace.yaml
-        run: |
-          set -Cfu
+        run: |-
           >/dev/null exec yq -e --yaml-fix-merge-anchor-to-spec -- 'keys - [
             "packages",
             "allowBuilds",
@@ -87,9 +82,8 @@ jobs:
         env:
           NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
       - name: Pnpm config path
-        run: |
-          set -Cfu
+        run: |-
           config=$(exec pnpm pm --dir . config get globalconfig)
-          command -p test ~/.config/pnpm/config.yaml -ef "$config"
+          command -p test ~/.config/pnpm/config.yaml -ef "${config:?}"
       - name: Pnpm run lint
         run: exec pnpm pm --dir . --include-workspace-root --fail-if-no-match -r run -- lint

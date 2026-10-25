@@ -1,6 +1,6 @@
 name: Renovate status check
 on: workflow_call
-defaults: { run: { shell: sh }}
+defaults: { run: { shell: sh } }
 permissions: { }
 jobs:
   renovate-status-check:

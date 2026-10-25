@@ -1,9 +1,7 @@
 name: Workflow lint
 on: workflow_call
-defaults:
-  run:
-    shell: sh
-permissions: {}
+defaults: { run: { shell: sh } }
+permissions: { }
 jobs:
   workflow-lint:
     permissions: { contents: read }

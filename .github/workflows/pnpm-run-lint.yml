@@ -65,6 +65,7 @@ jobs:
             "disallowWorkspaceCycles",
             "enablePrePostScripts",
             "hoist",
+            "include",
             "lockfile",
             "minimumReleaseAgeExcludePrune",
             "nodeOptions",

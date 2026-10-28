@@ -9,7 +9,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
     '.github/workflows/pnpm-run-lint.yml':
         - 'actions/checkout@v7.0.1'
-        - 'pnpm/setup@v3.1.1'
+        - 'pnpm/setup@v3.1.2'
     '.github/workflows/renovate-config-validate.yml':
         - 'actions/checkout@v7.0.1'
     '.github/workflows/renovate-inherited-config-validate.yml':
@@ -31,8 +31,8 @@ dependencies:
         commit: 'sha1-3a2844b7e9c422d3c10d287c895573f7108da1b3'
         owner_id: 44036562
         repo_id: 205262760
-    'pnpm/setup@v3.1.1':
-        ref: 'v3.1.1'
-        commit: 'sha1-a0881977cd8ea73b1ed212236c99ca10dcc80cf4'
+    'pnpm/setup@v3.1.2':
+        ref: 'v3.1.2'
+        commit: 'sha1-fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e'
         owner_id: 21320719
         repo_id: 1235693694

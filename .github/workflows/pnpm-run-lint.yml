@@ -77,7 +77,7 @@ jobs:
       - name: Setup pnpm
         # This requires a package.json with a packageManager field matching "pnpm@"
         # The version may be partial
-        uses: pnpm/setup@v3.1.1
+        uses: pnpm/setup@v3.1.2
         with:
           require-lockfile: true
         env:

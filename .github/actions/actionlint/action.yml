@@ -19,13 +19,13 @@ runs:
         }
     - name: Install
       env:
-        arg1: v1.17.0
+        arg_1: v1.17.0
         GH_TOKEN: ${{ github.token }}
       shell: sh
       run: |-
         set -Cfu
         unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
-        set -- "${arg1:?}"; unset -v arg1
+        set -- "$arg_1"; unset -v arg_1
         unset -v repo; readonly repo=kjanat/actionlint
         unset -v tempfile; tempfile=
         trap 'case ${tempfile?} in ("") ;; (*) command -p rm -- "${tempfile:?}"; esac' EXIT

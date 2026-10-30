@@ -16,6 +16,8 @@ runs:
         workers = 0
         [core]
         fsync = none
+        protectHFS
+        protectNTFS
         [credential]
         interactive = false
         [feature]

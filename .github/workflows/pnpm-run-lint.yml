@@ -26,6 +26,8 @@ jobs:
           uses: $/.github/actions/git-configure
         - name: Configure pnpm
           run: |-
+            set -Cfu
+            unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
             >>"${GITHUB_ENV:?}" command -p printf \
             'PNPM_CONFIG_WORKSPACE_DIR=%s
             ' "${PWD:?}"
@@ -52,6 +54,8 @@ jobs:
           set-safe-directory: false
       - name: Validate pnpm-workspace.yaml
         run: |-
+          set -Cfu
+          unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
           >/dev/null exec yq -e --yaml-fix-merge-anchor-to-spec -- 'keys - [
             "packages",
             "allowBuilds",
@@ -84,7 +88,12 @@ jobs:
           NODE_OPTIONS: ${{ env.NODE_OPTIONS  }} --tls-min-v1.2
       - name: Pnpm config path
         run: |-
-          config=$(exec pnpm pm --dir . config get globalconfig)
+          set -Cfu
+          unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
+          unset -v config; config=$(exec pnpm pm --dir . config get globalconfig)
           command -p test ~/.config/pnpm/config.yaml -ef "${config:?}"
       - name: Pnpm run lint
-        run: exec pnpm pm --dir . --include-workspace-root --fail-if-no-match -r run -- lint
+        run: |-
+          set -Cfu
+          unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
+          exec pnpm pm --dir . --include-workspace-root --fail-if-no-match -r run -- lint

@@ -26,8 +26,8 @@ jobs:
               GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
             run: |-
               set -Cfu
-              unset -v parent
-              parent=$(command git hash-object -t tree -- /dev/null)
+              unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
+              unset -v parent; parent=$(command git hash-object -t tree -- /dev/null)
               exec git -c core.whitespace=tabwidth=1,indent_with_nontab diff-index --cached --check "${parent:?}" --
           - name: Check diff attributes
             # can grep a tree and set attr-source
@@ -36,6 +36,7 @@ jobs:
             shell: bash
             run: |-
               set -Cfu -o posix
+              unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
               command git grep --cached -qIG -e $'[^\x01-\xFF]' -- || case $? in (1) exit 0;; (*) exit; esac
               >&2 command -p echo Null byte in text file.
               exit 1
@@ -47,6 +48,7 @@ jobs:
             shell: bash
             run: |-
               set -Cfu -o posix
+              unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
               shopt -s lastpipe
               exec git ls-files -ci --exclude-standard -- | {
                   unset -v -- path
@@ -61,6 +63,7 @@ jobs:
             shell: bash
             run: |-
               set -Cfu -o posix
+              unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
               shopt -s lastpipe
               exec git ls-files -c --format='.%(eolinfo:index)%x09.%(eolattr)%x09%(path)' -- | {
                   unset -v -- info attr path

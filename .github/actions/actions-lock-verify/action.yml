@@ -7,8 +7,9 @@ runs:
       env:
         GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
       shell: bash
-      run: |
+      run: |-
         set -Cfu -o posix
+        unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
         shopt -s lastpipe
         <<'EOF' exec git sparse-checkout check-rules | {
         .github
@@ -20,9 +21,15 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
       shell: sh
-      run: exec gh extension install github/gh-actions-lock
+      run: |-
+        set -Cfu
+        unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
+        exec gh extension install github/gh-actions-lock
     - name: Run
       env:
         GH_TOKEN: ${{ github.token }}
       shell: sh
-      run: exec gh actions-lock --verify
+      run: |-
+        set -Cfu
+        unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
+        exec gh actions-lock --verify

@@ -7,8 +7,9 @@ runs:
       env:
         GIT_TEST_DISALLOW_ABBREVIATED_OPTIONS: true
       shell: bash
-      run: |
+      run: |-
         set -Cfu -o posix
+        unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
         shopt -s lastpipe
         <<'EOF' exec git sparse-checkout check-rules | {
         .github
@@ -21,21 +22,23 @@ runs:
         arg1: v1.17.0
         GH_TOKEN: ${{ github.token }}
       shell: sh
-      run: |
+      run: |-
         set -Cfu
-        set -- "$arg1"; unset -v arg1
+        unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
+        set -- "${arg1:?}"; unset -v arg1
         unset -v repo; readonly repo=kjanat/actionlint
         unset -v tempfile; tempfile=
-        trap 'case $tempfile in ("") ;; (*) command -p rm -- "${tempfile:?}"; esac' EXIT
+        trap 'case ${tempfile?} in ("") ;; (*) command -p rm -- "${tempfile:?}"; esac' EXIT
         tempfile=$(exec mktemp)
-        command gh release -R "$repo" download --clobber -O "${tempfile:?}" -p actionlint_*_linux_amd64.tar.gz -- "${1:?}"
-        command gh release -R "$repo" verify-asset -- "${1:?}" "${tempfile:?}"
+        command gh release -R "${repo:?}" download --clobber -O "${tempfile:?}" -p actionlint_*_linux_amd64.tar.gz -- "${1:?}"
+        command gh release -R "${repo:?}" verify-asset -- "${1:?}" "${tempfile:?}"
         (CDPATH='' cd -- ~/; command -p mkdir -p .local/bin)
         command tar -C ~/.local/bin -xzf "${tempfile:?}" -- actionlint
     - name: Run
       shell: sh
-      run: |
-        set -Cfu --
+      run: |-
+        set -Cfu
+        unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
         unset -v config_file
         config_file=.github/actionlint.yaml
         command -p [ -e "${config_file:?}" ] || {
@@ -44,7 +47,7 @@ runs:
             command -p [ -e "${config_file:?}" ] || {
               case $? in (1) ;; (*) exit; esac
               config_file=
-              trap 'case $config_file in ("") ;; (*) command -p rm -- "${config_file:?}"; esac' EXIT
+              trap 'case ${config_file?} in ("") ;; (*) command -p rm -- "${config_file:?}"; esac' EXIT
               config_file=$(exec mktemp)
               >>"${config_file:?}" command -p printf %s "\
         # yaml-language-server: \$schema=https://raw.githubusercontent.com/kjanat/actionlint/refs/tags/v1.17.0/actionlint.schema.json

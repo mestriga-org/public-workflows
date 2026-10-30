@@ -24,8 +24,9 @@ jobs:
       - name: List presets
         id: list-presets
         shell: bash
-        run: |
+        run: |-
           set -Cfu -o posix -- presets/*.json
+          unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
           {
             command -p printf result=
             while :; do

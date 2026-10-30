@@ -4,9 +4,9 @@ runs:
   using: composite
   steps:
     - shell: sh
-      run: |
-        # for git v2.54
+      run: |- # for git v2.54
         set -Cfu
+        unset -v ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL
         >>"${GITHUB_ENV:?}" command -p printf \
         'GIT_CEILING_DIRECTORIES=%s/..
         GIT_TERMINAL_PROMPT=false

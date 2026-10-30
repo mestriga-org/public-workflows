@@ -39,7 +39,7 @@ jobs:
             command -p echo
           }>>"$GITHUB_OUTPUT"
       - name: Validate Renovate presets
-        uses: docker://renovate/renovate:44.189.0@sha256:54fbd7b038c3784d02a0d0fb67328733aacdc1357276ab71dd278eb0087b6add
+        uses: docker://renovate/renovate:44.190.0@sha256:dd348d05edcfba67e30826fb471d5bdee4868c68798abf3719a53915629503f1
         with:
           entrypoint: renovate-config-validator
           # cannot be single quoted

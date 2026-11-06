@@ -30,7 +30,7 @@ jobs:
             /package.json
             !*/
       - name: Validate Renovate configuration
-        uses: docker://renovate/renovate:44.206.2@sha256:d515a99f5d14d1c62b792ee61339d165dd9d20ee82ca9d5379daf639050bab51
+        uses: docker://renovate/renovate:44.206.3@sha256:083de4a4d079cdafc89d2a8781890fa30aef0f1bdb15fc3284638f9e01443af0
         with:
           # https://github.com/renovatebot/renovate/blob/42.42.0/lib/config-validator.ts
           entrypoint: renovate-config-validator
